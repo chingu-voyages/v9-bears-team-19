@@ -7,7 +7,6 @@ const Signup = () => {
 
 	const handleChange = e => {
 		e.preventDefault();
-		console.log(formValues);
 		setFormValues({ ...formValues, [e.target.name]: e.target.value });
 	};
 

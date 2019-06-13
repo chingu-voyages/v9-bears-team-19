@@ -6,4 +6,5 @@ type Mutation {
 
 type Query {
 	users: [User]!
+	currentUser: User
 }
