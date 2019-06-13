@@ -4,7 +4,7 @@ import { gql } from "apollo-boost";
 import { CURRENT_USER_QUERY } from "./User";
 
 const Signup = () => {
-	const [formValues, setFormValues] = useState({});
+	const [formValues, setFormValues] = useState({ club: "Not Affiliated" });
 
 	const handleChange = e => {
 		e.preventDefault();
