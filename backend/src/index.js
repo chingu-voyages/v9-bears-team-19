@@ -17,6 +17,8 @@ const corsOptions = {
 	credentials: true
 };
 
+// middleware to take the jwt from the cookie on each request, decode it then attach the userId to the request
+
 const auth = (req, res, next) => {
 	let token = req.headers.cookie;
 	if (token) {
