@@ -9,7 +9,7 @@ export default class MenuExampleBasic extends Component {
 	render() {
 		const { activeItem } = this.state;
 
-		console.log(this.props.user);
+		console.log(!!this.props.user);
 
 		return (
 			<Menu>
@@ -36,10 +36,11 @@ export default class MenuExampleBasic extends Component {
 				>
 					Upcoming Events
 				</Menu.Item>
-				{/* this should be displaying the welcome back but it is not; it is, instead, displaying the Please Login */}
-				{/* when the component renders initially this.props.user is undefined but then it comes back with the user */}
-				{/* details but does not rerender the component to mirror that (as far as I can see), this may be a lifecycle thing */}
-				{!this.props.user ? <p>Welcome back</p> : <p>Please login</p>}
+				{!this.props.user ? (
+					<p>Please login</p>
+				) : (
+					<p>Welcome back {this.props.user.name}</p>
+				)}
 			</Menu>
 		);
 	}
