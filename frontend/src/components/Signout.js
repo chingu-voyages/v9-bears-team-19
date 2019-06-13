@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
+import { CURRENT_USER_QUERY } from "./User";
 
 const Signout = () => {
 	const SIGNOUT_MUTATION = gql`
-		mutation SIGNOUT_MUTATION($email: String!, $password: String!) {
+		mutation SIGNOUT_MUTATION {
 			logoutUser {
 				message
 			}
@@ -12,7 +13,10 @@ const Signout = () => {
 	`;
 
 	return (
-		<Mutation mutation={SIGNOUT_MUTATION}>
+		<Mutation
+			mutation={SIGNOUT_MUTATION}
+			refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+		>
 			{logoutUser => {
 				return (
 					<form

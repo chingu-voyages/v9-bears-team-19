@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
+import { CURRENT_USER_QUERY } from "./User";
 
 const Signin = () => {
 	const [formValues, setFormValues] = useState({});
@@ -19,7 +20,11 @@ const Signin = () => {
 	`;
 
 	return (
-		<Mutation mutation={SIGNIN_MUTATION} variables={formValues}>
+		<Mutation
+			mutation={SIGNIN_MUTATION}
+			variables={formValues}
+			refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+		>
 			{loginUser => {
 				return (
 					<form

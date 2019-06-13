@@ -5,10 +5,11 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import Users from "./components/Users";
 import User from "./components/User";
-
 import TopNavbar from "./components/TopNavbar";
 import Placeholder from "./components/Placeholder";
 import Signup from "./components/Signup";
+import Signin from "./components/Signin";
+import Signout from "./components/Signout";
 
 const client = new ApolloClient({
 	uri: process.env.REACT_APP_APOLLO_SERVER_URL,
@@ -32,6 +33,8 @@ function App() {
 								</Container>
 								<Users />
 								<Signup />
+								<Signin />
+								<Signout />
 							</>
 						);
 					}}
