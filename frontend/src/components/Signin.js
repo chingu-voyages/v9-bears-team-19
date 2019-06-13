@@ -43,7 +43,7 @@ const Signin = () => {
 									onChange={handleChange}
 								/>
 							</label>
-							<button type="submit">Submit</button>
+							<button type="submit">Sign In</button>
 						</fieldset>
 					</form>
 				);
