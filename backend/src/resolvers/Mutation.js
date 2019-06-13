@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Mutation = {
 	async createUser(parent, args, ctx, info) {
+		console.log(ctx.db);
 		let secret = await new Promise((res, rej) => {
 			bcrypt.hash(args.password, 10, (err, hash) => {
 				if (err) {
@@ -12,7 +13,15 @@ const Mutation = {
 			});
 		});
 		const user = await ctx.db.mutation.createUser(
-			{ data: { ...args, password: secret } },
+			{
+				data: {
+					...args,
+					password: secret,
+					permissions: {
+						set: ["USER"]
+					}
+				}
+			},
 			info
 		);
 		const token = await jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
