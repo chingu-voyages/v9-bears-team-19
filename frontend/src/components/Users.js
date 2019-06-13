@@ -7,6 +7,7 @@ const usersQuery = gql`
 		users {
 			name
 			id
+			password
 		}
 	}
 `;
@@ -21,10 +22,9 @@ const Users = props => {
 				if (error) {
 					return <p>{error.message}</p>;
 				}
-				console.log(data);
 				return data.users.map(v => (
 					<p>
-						{v.name}, {v.id}
+						{v.name}, {v.id}, {v.password}
 					</p>
 				));
 			}}
