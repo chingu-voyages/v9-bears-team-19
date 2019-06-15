@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
+import { Button, Form, Container, Header, Grid, Segment } from 'semantic-ui-react'
+
 
 const Signup = () => {
 	const [formValues, setFormValues] = useState({});
@@ -28,38 +30,45 @@ const Signup = () => {
 		<Mutation mutation={SIGNUP_MUTATION} variables={formValues}>
 			{createUser => {
 				return (
-					<form
-						method="post"
-						onSubmit={e => {
-							e.preventDefault();
-							createUser();
-						}}
-					>
-						<fieldset>
-							<h2>Sign Up</h2>
-							<label htmlFor="name">
-								Name:
-								<input name="name" onChange={handleChange} />
-							</label>
-							<label htmlFor="email">
-								Email:
-								<input name="email" onChange={handleChange} />
-							</label>
-							<label htmlFor="club">
-								Club:
-								<input name="club" onChange={handleChange} />
-							</label>
-							<label>
-								Password:
-								<input
-									name="password"
-									type="password"
-									onChange={handleChange}
-								/>
-							</label>
-							<button type="submit">Submit</button>
-						</fieldset>
-					</form>
+					<Container text textAlign="left">
+						<Grid centered columns={2}>
+							<Grid.Column>
+								<Segment>
+									<Header as="h2">Sign Up</Header>
+									<Form
+										method="post"
+										onSubmit={e => {
+											e.preventDefault();
+											createUser();
+										}}
+									>
+										<Form.Field>
+											<label>Name</label>
+											<input name="name" placeHolder="John Doe" onChange={handleChange} />
+										</Form.Field>
+										<Form.Field>
+											<label htmlFor="email">Email</label>
+											<input name="email" placeHolder="myemail@domain.com" onChange={handleChange} />
+										</Form.Field>
+										<Form.Field>
+											<label htmlFor="club">Club</label>
+											<input name="club" placeHolder="LA Area Runners" onChange={handleChange} />
+										</Form.Field>
+										<Form.Field>
+											<label>Password</label>
+											<input
+												name="password"
+												type="password"
+												onChange={handleChange}
+												placeholder="sneaky_password_123"
+											/>
+										</Form.Field>
+											<Button type="submit">Submit</Button>
+									</Form>
+								</Segment>
+							</Grid.Column>
+						</Grid>
+					</Container>
 				);
 			}}
 		</Mutation>
