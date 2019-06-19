@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
+import { CURRENT_USER_QUERY } from "./User";
 import { Button, Form, Container, Header, Grid, Segment } from 'semantic-ui-react'
 
-
 const Signup = () => {
-	const [formValues, setFormValues] = useState({});
+	const [formValues, setFormValues] = useState({ club: "Not Affiliated" });
 
 	const handleChange = e => {
 		e.preventDefault();
@@ -26,7 +26,11 @@ const Signup = () => {
 	`;
 
 	return (
-		<Mutation mutation={SIGNUP_MUTATION} variables={formValues}>
+		<Mutation
+			mutation={SIGNUP_MUTATION}
+			variables={formValues}
+			refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+		>
 			{createUser => {
 				return (
 					<Container text textAlign="left">

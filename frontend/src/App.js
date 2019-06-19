@@ -4,10 +4,7 @@ import { Container } from "semantic-ui-react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter, Route } from 'react-router-dom'
-=======
-import Users from "./components/Users";
 import User from "./components/User";
-
 import TopNavbar from "./components/TopNavbar";
 import Signup from "./components/Signup";
 import Track from './components/Track'

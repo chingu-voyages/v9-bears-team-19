@@ -1,3 +1,147 @@
+type Activity {
+  id: ID!
+  name: String!
+  dataFields: [String!]!
+}
+
+type ActivityConnection {
+  pageInfo: PageInfo!
+  edges: [ActivityEdge]!
+  aggregate: AggregateActivity!
+}
+
+input ActivityCreatedataFieldsInput {
+  set: [String!]
+}
+
+input ActivityCreateInput {
+  id: ID
+  name: String!
+  dataFields: ActivityCreatedataFieldsInput
+}
+
+input ActivityCreateOneInput {
+  create: ActivityCreateInput
+  connect: ActivityWhereUniqueInput
+}
+
+type ActivityEdge {
+  node: Activity!
+  cursor: String!
+}
+
+enum ActivityOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type ActivityPreviousValues {
+  id: ID!
+  name: String!
+  dataFields: [String!]!
+}
+
+type ActivitySubscriptionPayload {
+  mutation: MutationType!
+  node: Activity
+  updatedFields: [String!]
+  previousValues: ActivityPreviousValues
+}
+
+input ActivitySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ActivityWhereInput
+  AND: [ActivitySubscriptionWhereInput!]
+  OR: [ActivitySubscriptionWhereInput!]
+  NOT: [ActivitySubscriptionWhereInput!]
+}
+
+input ActivityUpdatedataFieldsInput {
+  set: [String!]
+}
+
+input ActivityUpdateDataInput {
+  name: String
+  dataFields: ActivityUpdatedataFieldsInput
+}
+
+input ActivityUpdateInput {
+  name: String
+  dataFields: ActivityUpdatedataFieldsInput
+}
+
+input ActivityUpdateManyMutationInput {
+  name: String
+  dataFields: ActivityUpdatedataFieldsInput
+}
+
+input ActivityUpdateOneRequiredInput {
+  create: ActivityCreateInput
+  update: ActivityUpdateDataInput
+  upsert: ActivityUpsertNestedInput
+  connect: ActivityWhereUniqueInput
+}
+
+input ActivityUpsertNestedInput {
+  update: ActivityUpdateDataInput!
+  create: ActivityCreateInput!
+}
+
+input ActivityWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [ActivityWhereInput!]
+  OR: [ActivityWhereInput!]
+  NOT: [ActivityWhereInput!]
+}
+
+input ActivityWhereUniqueInput {
+  id: ID
+}
+
+type AggregateActivity {
+  count: Int!
+}
+
+type AggregateDataField {
+  count: Int!
+}
+
+type AggregateSession {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -6,9 +150,238 @@ type BatchPayload {
   count: Long!
 }
 
+type DataField {
+  id: ID!
+  dataName: String!
+  dataValue: String
+}
+
+type DataFieldConnection {
+  pageInfo: PageInfo!
+  edges: [DataFieldEdge]!
+  aggregate: AggregateDataField!
+}
+
+input DataFieldCreateInput {
+  id: ID
+  dataName: String!
+  dataValue: String
+}
+
+input DataFieldCreateManyInput {
+  create: [DataFieldCreateInput!]
+  connect: [DataFieldWhereUniqueInput!]
+}
+
+type DataFieldEdge {
+  node: DataField!
+  cursor: String!
+}
+
+enum DataFieldOrderByInput {
+  id_ASC
+  id_DESC
+  dataName_ASC
+  dataName_DESC
+  dataValue_ASC
+  dataValue_DESC
+}
+
+type DataFieldPreviousValues {
+  id: ID!
+  dataName: String!
+  dataValue: String
+}
+
+input DataFieldScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  dataName: String
+  dataName_not: String
+  dataName_in: [String!]
+  dataName_not_in: [String!]
+  dataName_lt: String
+  dataName_lte: String
+  dataName_gt: String
+  dataName_gte: String
+  dataName_contains: String
+  dataName_not_contains: String
+  dataName_starts_with: String
+  dataName_not_starts_with: String
+  dataName_ends_with: String
+  dataName_not_ends_with: String
+  dataValue: String
+  dataValue_not: String
+  dataValue_in: [String!]
+  dataValue_not_in: [String!]
+  dataValue_lt: String
+  dataValue_lte: String
+  dataValue_gt: String
+  dataValue_gte: String
+  dataValue_contains: String
+  dataValue_not_contains: String
+  dataValue_starts_with: String
+  dataValue_not_starts_with: String
+  dataValue_ends_with: String
+  dataValue_not_ends_with: String
+  AND: [DataFieldScalarWhereInput!]
+  OR: [DataFieldScalarWhereInput!]
+  NOT: [DataFieldScalarWhereInput!]
+}
+
+type DataFieldSubscriptionPayload {
+  mutation: MutationType!
+  node: DataField
+  updatedFields: [String!]
+  previousValues: DataFieldPreviousValues
+}
+
+input DataFieldSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DataFieldWhereInput
+  AND: [DataFieldSubscriptionWhereInput!]
+  OR: [DataFieldSubscriptionWhereInput!]
+  NOT: [DataFieldSubscriptionWhereInput!]
+}
+
+input DataFieldUpdateDataInput {
+  dataName: String
+  dataValue: String
+}
+
+input DataFieldUpdateInput {
+  dataName: String
+  dataValue: String
+}
+
+input DataFieldUpdateManyDataInput {
+  dataName: String
+  dataValue: String
+}
+
+input DataFieldUpdateManyInput {
+  create: [DataFieldCreateInput!]
+  update: [DataFieldUpdateWithWhereUniqueNestedInput!]
+  upsert: [DataFieldUpsertWithWhereUniqueNestedInput!]
+  delete: [DataFieldWhereUniqueInput!]
+  connect: [DataFieldWhereUniqueInput!]
+  set: [DataFieldWhereUniqueInput!]
+  disconnect: [DataFieldWhereUniqueInput!]
+  deleteMany: [DataFieldScalarWhereInput!]
+  updateMany: [DataFieldUpdateManyWithWhereNestedInput!]
+}
+
+input DataFieldUpdateManyMutationInput {
+  dataName: String
+  dataValue: String
+}
+
+input DataFieldUpdateManyWithWhereNestedInput {
+  where: DataFieldScalarWhereInput!
+  data: DataFieldUpdateManyDataInput!
+}
+
+input DataFieldUpdateWithWhereUniqueNestedInput {
+  where: DataFieldWhereUniqueInput!
+  data: DataFieldUpdateDataInput!
+}
+
+input DataFieldUpsertWithWhereUniqueNestedInput {
+  where: DataFieldWhereUniqueInput!
+  update: DataFieldUpdateDataInput!
+  create: DataFieldCreateInput!
+}
+
+input DataFieldWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  dataName: String
+  dataName_not: String
+  dataName_in: [String!]
+  dataName_not_in: [String!]
+  dataName_lt: String
+  dataName_lte: String
+  dataName_gt: String
+  dataName_gte: String
+  dataName_contains: String
+  dataName_not_contains: String
+  dataName_starts_with: String
+  dataName_not_starts_with: String
+  dataName_ends_with: String
+  dataName_not_ends_with: String
+  dataValue: String
+  dataValue_not: String
+  dataValue_in: [String!]
+  dataValue_not_in: [String!]
+  dataValue_lt: String
+  dataValue_lte: String
+  dataValue_gt: String
+  dataValue_gte: String
+  dataValue_contains: String
+  dataValue_not_contains: String
+  dataValue_starts_with: String
+  dataValue_not_starts_with: String
+  dataValue_ends_with: String
+  dataValue_not_ends_with: String
+  AND: [DataFieldWhereInput!]
+  OR: [DataFieldWhereInput!]
+  NOT: [DataFieldWhereInput!]
+}
+
+input DataFieldWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
 scalar Long
 
 type Mutation {
+  createActivity(data: ActivityCreateInput!): Activity!
+  updateActivity(data: ActivityUpdateInput!, where: ActivityWhereUniqueInput!): Activity
+  updateManyActivities(data: ActivityUpdateManyMutationInput!, where: ActivityWhereInput): BatchPayload!
+  upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
+  deleteActivity(where: ActivityWhereUniqueInput!): Activity
+  deleteManyActivities(where: ActivityWhereInput): BatchPayload!
+  createDataField(data: DataFieldCreateInput!): DataField!
+  updateDataField(data: DataFieldUpdateInput!, where: DataFieldWhereUniqueInput!): DataField
+  updateManyDataFields(data: DataFieldUpdateManyMutationInput!, where: DataFieldWhereInput): BatchPayload!
+  upsertDataField(where: DataFieldWhereUniqueInput!, create: DataFieldCreateInput!, update: DataFieldUpdateInput!): DataField!
+  deleteDataField(where: DataFieldWhereUniqueInput!): DataField
+  deleteManyDataFields(where: DataFieldWhereInput): BatchPayload!
+  createSession(data: SessionCreateInput!): Session!
+  updateSession(data: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session
+  updateManySessions(data: SessionUpdateManyMutationInput!, where: SessionWhereInput): BatchPayload!
+  upsertSession(where: SessionWhereUniqueInput!, create: SessionCreateInput!, update: SessionUpdateInput!): Session!
+  deleteSession(where: SessionWhereUniqueInput!): Session
+  deleteManySessions(where: SessionWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -34,14 +407,165 @@ type PageInfo {
   endCursor: String
 }
 
+enum Permission {
+  ADMIN
+  CLUB_ADMIN
+  USER
+  FRIEND
+}
+
 type Query {
+  activity(where: ActivityWhereUniqueInput!): Activity
+  activities(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Activity]!
+  activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
+  dataField(where: DataFieldWhereUniqueInput!): DataField
+  dataFields(where: DataFieldWhereInput, orderBy: DataFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataField]!
+  dataFieldsConnection(where: DataFieldWhereInput, orderBy: DataFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataFieldConnection!
+  session(where: SessionWhereUniqueInput!): Session
+  sessions(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Session]!
+  sessionsConnection(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SessionConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
+type Session {
+  id: ID!
+  date: String!
+  name: String!
+  user: User!
+  activityType: Activity!
+  dataValues(where: DataFieldWhereInput, orderBy: DataFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataField!]
+}
+
+type SessionConnection {
+  pageInfo: PageInfo!
+  edges: [SessionEdge]!
+  aggregate: AggregateSession!
+}
+
+input SessionCreateInput {
+  id: ID
+  date: String!
+  name: String!
+  user: UserCreateOneInput!
+  activityType: ActivityCreateOneInput!
+  dataValues: DataFieldCreateManyInput
+}
+
+type SessionEdge {
+  node: Session!
+  cursor: String!
+}
+
+enum SessionOrderByInput {
+  id_ASC
+  id_DESC
+  date_ASC
+  date_DESC
+  name_ASC
+  name_DESC
+}
+
+type SessionPreviousValues {
+  id: ID!
+  date: String!
+  name: String!
+}
+
+type SessionSubscriptionPayload {
+  mutation: MutationType!
+  node: Session
+  updatedFields: [String!]
+  previousValues: SessionPreviousValues
+}
+
+input SessionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SessionWhereInput
+  AND: [SessionSubscriptionWhereInput!]
+  OR: [SessionSubscriptionWhereInput!]
+  NOT: [SessionSubscriptionWhereInput!]
+}
+
+input SessionUpdateInput {
+  date: String
+  name: String
+  user: UserUpdateOneRequiredInput
+  activityType: ActivityUpdateOneRequiredInput
+  dataValues: DataFieldUpdateManyInput
+}
+
+input SessionUpdateManyMutationInput {
+  date: String
+  name: String
+}
+
+input SessionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  date: String
+  date_not: String
+  date_in: [String!]
+  date_not_in: [String!]
+  date_lt: String
+  date_lte: String
+  date_gt: String
+  date_gte: String
+  date_contains: String
+  date_not_contains: String
+  date_starts_with: String
+  date_not_starts_with: String
+  date_ends_with: String
+  date_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  user: UserWhereInput
+  activityType: ActivityWhereInput
+  dataValues_every: DataFieldWhereInput
+  dataValues_some: DataFieldWhereInput
+  dataValues_none: DataFieldWhereInput
+  AND: [SessionWhereInput!]
+  OR: [SessionWhereInput!]
+  NOT: [SessionWhereInput!]
+}
+
+input SessionWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
+  activity(where: ActivitySubscriptionWhereInput): ActivitySubscriptionPayload
+  dataField(where: DataFieldSubscriptionWhereInput): DataFieldSubscriptionPayload
+  session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -51,6 +575,9 @@ type User {
   email: String!
   password: String!
   club: String!
+  permissions: [Permission!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -65,6 +592,16 @@ input UserCreateInput {
   email: String!
   password: String!
   club: String!
+  permissions: UserCreatepermissionsInput
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreatepermissionsInput {
+  set: [Permission!]
 }
 
 type UserEdge {
@@ -83,6 +620,10 @@ enum UserOrderByInput {
   password_DESC
   club_ASC
   club_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
@@ -91,6 +632,9 @@ type UserPreviousValues {
   email: String!
   password: String!
   club: String!
+  permissions: [Permission!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -111,11 +655,20 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  name: String
+  email: String
+  password: String
+  club: String
+  permissions: UserUpdatepermissionsInput
+}
+
 input UserUpdateInput {
   name: String
   email: String
   password: String
   club: String
+  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateManyMutationInput {
@@ -123,6 +676,23 @@ input UserUpdateManyMutationInput {
   email: String
   password: String
   club: String
+  permissions: UserUpdatepermissionsInput
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdatepermissionsInput {
+  set: [Permission!]
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
@@ -196,6 +766,22 @@ input UserWhereInput {
   club_not_starts_with: String
   club_ends_with: String
   club_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

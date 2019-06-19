@@ -4,4 +4,35 @@ type User {
 	email: String! @unique
 	password: String!
 	club: String!
+	permissions: [Permission!]! @scalarList(strategy: RELATION)
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
+type DataField {
+	id: ID! @id
+	dataName: String!
+	dataValue: String
+}
+
+type Activity {
+	id: ID! @id
+	name: String!
+	dataFields: [String!]! @scalarList(strategy: RELATION)
+}
+
+type Session {
+	id: ID! @id
+	date: String!
+	name: String!
+	user: User!
+	activityType: Activity!
+	dataValues: [DataField!]! @scalarList(strategy: RELATION)
+}
+
+enum Permission {
+	ADMIN
+	CLUB_ADMIN
+	USER
+	FRIEND
 }

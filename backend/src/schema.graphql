@@ -1,10 +1,19 @@
 # import * from "./generated/prisma.graphql"
+type SuccessMessage {
+	message: String
+}
 
 type Mutation {
 	createUser(name: String, email: String, password: String, club: String): User!
+	loginUser(email: String, password: String): User
+	logoutUser: SuccessMessage
+	createActivity(name: String!, dataFields: [String!]!): Activity!
+	createSession(date: String!, name: String!, activityType: String!): Session!
 }
 
 type Query {
 	users: [User]!
 	currentUser: User
+	sessions: [Session]!
+	activities: [Activity]!
 }
