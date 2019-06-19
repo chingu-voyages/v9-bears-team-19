@@ -3,13 +3,13 @@ import "./App.css";
 import { Container } from "semantic-ui-react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import Users from "./components/Users";
+import { BrowserRouter, Route } from 'react-router-dom'
 import User from "./components/User";
 import TopNavbar from "./components/TopNavbar";
-import Placeholder from "./components/Placeholder";
 import Signup from "./components/Signup";
-import Signin from "./components/Signin";
-import Signout from "./components/Signout";
+import Track from './components/Track'
+import Progress from './components/Progress'
+import History from './components/History'
 
 const client = new ApolloClient({
 	uri: process.env.REACT_APP_APOLLO_SERVER_URL,
@@ -24,18 +24,15 @@ function App() {
 				<User>
 					{({ data }) => {
 						return (
-							<>
-								<TopNavbar user={data.currentUser} />
-								<Container>
-									<Placeholder />
-									<Placeholder />
-									<Placeholder />
-								</Container>
-								<Users />
-								<Signup />
-								<Signin />
-								<Signout />
-							</>
+							<Container className="App">
+								<BrowserRouter>
+									<TopNavbar user={data.currentUser} />
+									<Route path="/" exact component={Signup} />
+									<Route path="/track" exact component={Track} />
+									<Route path="/progress" exact component={Progress} />
+									<Route path="/history" exact component={History} />
+								</BrowserRouter>
+							</Container>
 						);
 					}}
 				</User>
