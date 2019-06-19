@@ -48,7 +48,7 @@ export default class MenuExampleBasic extends Component {
 					</Menu.Item>
 				</Link>
 				<Menu.Menu position="right">
-					<Link>
+					<Link to="/signin">
 						<Menu.Item name="login">Login</Menu.Item>
 					</Link>
 				</Menu.Menu>
