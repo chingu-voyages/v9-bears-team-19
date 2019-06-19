@@ -14,7 +14,9 @@ const Query = {
 			},
 			info
 		);
-	}
+	},
+	activities: forwardTo("db"),
+	sessions: forwardTo("db")
 };
 
 module.exports = Query;

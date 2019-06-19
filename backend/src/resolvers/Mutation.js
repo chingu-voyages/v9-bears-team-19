@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 
 const Mutation = {
 	async createUser(parent, args, ctx, info) {
-		console.log(ctx.db);
 		let secret = await new Promise((res, rej) => {
 			bcrypt.hash(args.password, 10, (err, hash) => {
 				if (err) {
@@ -54,6 +53,42 @@ const Mutation = {
 	async logoutUser(parent, args, ctx, info) {
 		ctx.res.clearCookie("token");
 		return { message: "Logged Out" };
+	},
+	async createActivity(parent, args, ctx, info) {
+		const fields = args.dataFields;
+		const activity = await ctx.db.mutation.createActivity(
+			{
+				data: {
+					...args,
+					dataFields: {
+						set: [...fields]
+					}
+				}
+			},
+			info
+		);
+		return activity;
+	},
+	async createSession(parent, args, ctx, info) {
+		if (!ctx.userId) {
+			throw new Error("Login Required");
+		}
+		const user = await ctx.db.query.user({ where: { id: ctx.userId } });
+		const session = await ctx.db.mutation.createSession(
+			{
+				data: {
+					...args,
+					user: {
+						connect: { id: ctx.userId }
+					},
+					activityType: {
+						connect: { id: args.activityType }
+					}
+				}
+			},
+			info
+		);
+		return session;
 	}
 };
 

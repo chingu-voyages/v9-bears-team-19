@@ -4,9 +4,7 @@ type User {
 	email: String! @unique
 	password: String!
 	club: String!
-	permissions: [Permission!]!
-		@scalarList(strategy: RELATION)
-		@default(value: [USER])
+	permissions: [Permission!]! @scalarList(strategy: RELATION)
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
