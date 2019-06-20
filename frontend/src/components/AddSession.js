@@ -4,19 +4,17 @@ import { gql } from "apollo-boost";
 
 const AddSession = props => {
 	const [formValues, setFormValues] = useState({});
-	const [sessionName, setSessionName] = useState("");
-	const [dataFields, setDataFields] = useState([]);
+	const [dataValues, setDataValues] = useState({});
 
 	const handleChange = e => {
 		e.preventDefault();
 		setFormValues({ ...formValues, [e.target.name]: e.target.value });
 	};
 
-	const handleAddField = e => {
+	const handleAddData = e => {
 		e.preventDefault();
-		console.log(e.target.value);
-		setDataFields([...dataFields, formValues.dataFields]);
-		setFormValues({ ...formValues, dataFields: "" });
+		setDataValues({ ...dataValues, [e.target.name]: e.target.value });
+		setFormValues({ ...formValues, dataValues: JSON.stringify(dataValues) });
 	};
 
 	const ADD_SESSION_MUTATION = gql`
@@ -46,17 +44,6 @@ const AddSession = props => {
 			}
 		}
 	`;
-
-	// type Session {
-	// 	id: ID! @id
-	// 	date: String!
-	// 	name: String!
-	// 	user: User!
-	// 	activityType: Activity!
-	// 	dataValues: [DataField!]! @scalarList(strategy: RELATION)
-	// }
-
-	console.table(formValues);
 
 	return (
 		<Query query={ALL_ACTIVITIES_QUERY}>
@@ -116,8 +103,8 @@ const AddSession = props => {
 															<input
 																name={v}
 																key={v}
-																onChange={handleChange}
-																value={formValues.dataValues}
+																onChange={handleAddData}
+																value={dataValues[v]}
 															/>
 														</label>
 													))}

@@ -12,7 +12,7 @@ type Mutation {
 		date: String!
 		name: String!
 		activityType: String!
-		dataValues: Json!
+		dataValues: String!
 	): Session!
 }
 

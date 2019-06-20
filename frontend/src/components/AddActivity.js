@@ -27,8 +27,6 @@ const AddActivity = props => {
 		}
 	`;
 
-	console.log({ name: formValues.activityName, dataFields });
-
 	return (
 		<Mutation
 			mutation={ADD_ACTIVITY_MUTATION}
