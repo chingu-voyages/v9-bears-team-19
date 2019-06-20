@@ -48,10 +48,12 @@ export default class MenuExampleBasic extends Component {
 					</Menu.Item>
 				</Link>
 				<Menu.Menu position="right">
-					<Link>
+					<Link to="/signin">
 						<Menu.Item name="login">Login</Menu.Item>
 					</Link>
 				</Menu.Menu>
+				{/* // TODO I've just chucked this in here so it is in place. You will
+				probably want to restyle it properly. */}
 				{!this.props.user ? (
 					<p>Please login</p>
 				) : (

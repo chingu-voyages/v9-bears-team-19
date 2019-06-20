@@ -16,6 +16,7 @@ const AddActivity = props => {
 		e.preventDefault();
 		console.log(e.target.value);
 		setDataFields([...dataFields, formValues.dataFields]);
+		setFormValues({ ...formValues, dataFields: "" });
 	};
 
 	const ADD_ACTIVITY_MUTATION = gql`
@@ -27,7 +28,10 @@ const AddActivity = props => {
 	`;
 
 	return (
-		<Mutation mutation={ADD_ACTIVITY_MUTATION} variables={formValues}>
+		<Mutation
+			mutation={ADD_ACTIVITY_MUTATION}
+			variables={{ name: formValues.activityName, dataFields }}
+		>
 			{createActivity => {
 				return (
 					<>
@@ -42,7 +46,11 @@ const AddActivity = props => {
 							<fieldset>
 								<label htmlFor="activityName">
 									Name:
-									<input name="activityName" onChange={handleChange} />
+									<input
+										name="activityName"
+										onChange={handleChange}
+										value={formValues.activityName}
+									/>
 								</label>
 								<label htmlFor="dataFields">
 									Data Fields:
@@ -52,7 +60,7 @@ const AddActivity = props => {
 									<input
 										name="dataFields"
 										onChange={handleChange}
-										value={formValues[dataFields]}
+										value={formValues.dataFields}
 									/>
 								</label>
 								<button onClick={handleAddField}>+</button>

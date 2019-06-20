@@ -168,11 +168,6 @@ input DataFieldCreateInput {
   dataValue: String
 }
 
-input DataFieldCreateManyInput {
-  create: [DataFieldCreateInput!]
-  connect: [DataFieldWhereUniqueInput!]
-}
-
 type DataFieldEdge {
   node: DataField!
   cursor: String!
@@ -193,54 +188,6 @@ type DataFieldPreviousValues {
   dataValue: String
 }
 
-input DataFieldScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  dataName: String
-  dataName_not: String
-  dataName_in: [String!]
-  dataName_not_in: [String!]
-  dataName_lt: String
-  dataName_lte: String
-  dataName_gt: String
-  dataName_gte: String
-  dataName_contains: String
-  dataName_not_contains: String
-  dataName_starts_with: String
-  dataName_not_starts_with: String
-  dataName_ends_with: String
-  dataName_not_ends_with: String
-  dataValue: String
-  dataValue_not: String
-  dataValue_in: [String!]
-  dataValue_not_in: [String!]
-  dataValue_lt: String
-  dataValue_lte: String
-  dataValue_gt: String
-  dataValue_gte: String
-  dataValue_contains: String
-  dataValue_not_contains: String
-  dataValue_starts_with: String
-  dataValue_not_starts_with: String
-  dataValue_ends_with: String
-  dataValue_not_ends_with: String
-  AND: [DataFieldScalarWhereInput!]
-  OR: [DataFieldScalarWhereInput!]
-  NOT: [DataFieldScalarWhereInput!]
-}
-
 type DataFieldSubscriptionPayload {
   mutation: MutationType!
   node: DataField
@@ -259,52 +206,14 @@ input DataFieldSubscriptionWhereInput {
   NOT: [DataFieldSubscriptionWhereInput!]
 }
 
-input DataFieldUpdateDataInput {
-  dataName: String
-  dataValue: String
-}
-
 input DataFieldUpdateInput {
   dataName: String
   dataValue: String
 }
 
-input DataFieldUpdateManyDataInput {
-  dataName: String
-  dataValue: String
-}
-
-input DataFieldUpdateManyInput {
-  create: [DataFieldCreateInput!]
-  update: [DataFieldUpdateWithWhereUniqueNestedInput!]
-  upsert: [DataFieldUpsertWithWhereUniqueNestedInput!]
-  delete: [DataFieldWhereUniqueInput!]
-  connect: [DataFieldWhereUniqueInput!]
-  set: [DataFieldWhereUniqueInput!]
-  disconnect: [DataFieldWhereUniqueInput!]
-  deleteMany: [DataFieldScalarWhereInput!]
-  updateMany: [DataFieldUpdateManyWithWhereNestedInput!]
-}
-
 input DataFieldUpdateManyMutationInput {
   dataName: String
   dataValue: String
-}
-
-input DataFieldUpdateManyWithWhereNestedInput {
-  where: DataFieldScalarWhereInput!
-  data: DataFieldUpdateManyDataInput!
-}
-
-input DataFieldUpdateWithWhereUniqueNestedInput {
-  where: DataFieldWhereUniqueInput!
-  data: DataFieldUpdateDataInput!
-}
-
-input DataFieldUpsertWithWhereUniqueNestedInput {
-  where: DataFieldWhereUniqueInput!
-  update: DataFieldUpdateDataInput!
-  create: DataFieldCreateInput!
 }
 
 input DataFieldWhereInput {
@@ -360,6 +269,8 @@ input DataFieldWhereUniqueInput {
 }
 
 scalar DateTime
+
+scalar Json
 
 scalar Long
 
@@ -436,7 +347,7 @@ type Session {
   name: String!
   user: User!
   activityType: Activity!
-  dataValues(where: DataFieldWhereInput, orderBy: DataFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataField!]
+  dataValues: Json!
 }
 
 type SessionConnection {
@@ -451,7 +362,7 @@ input SessionCreateInput {
   name: String!
   user: UserCreateOneInput!
   activityType: ActivityCreateOneInput!
-  dataValues: DataFieldCreateManyInput
+  dataValues: Json!
 }
 
 type SessionEdge {
@@ -466,12 +377,15 @@ enum SessionOrderByInput {
   date_DESC
   name_ASC
   name_DESC
+  dataValues_ASC
+  dataValues_DESC
 }
 
 type SessionPreviousValues {
   id: ID!
   date: String!
   name: String!
+  dataValues: Json!
 }
 
 type SessionSubscriptionPayload {
@@ -497,12 +411,13 @@ input SessionUpdateInput {
   name: String
   user: UserUpdateOneRequiredInput
   activityType: ActivityUpdateOneRequiredInput
-  dataValues: DataFieldUpdateManyInput
+  dataValues: Json
 }
 
 input SessionUpdateManyMutationInput {
   date: String
   name: String
+  dataValues: Json
 }
 
 input SessionWhereInput {
@@ -550,9 +465,6 @@ input SessionWhereInput {
   name_not_ends_with: String
   user: UserWhereInput
   activityType: ActivityWhereInput
-  dataValues_every: DataFieldWhereInput
-  dataValues_some: DataFieldWhereInput
-  dataValues_none: DataFieldWhereInput
   AND: [SessionWhereInput!]
   OR: [SessionWhereInput!]
   NOT: [SessionWhereInput!]

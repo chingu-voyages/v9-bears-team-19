@@ -3,13 +3,14 @@ import "./App.css";
 import { Container } from "semantic-ui-react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route } from "react-router-dom";
 import User from "./components/User";
 import TopNavbar from "./components/TopNavbar";
 import Signup from "./components/Signup";
-import Track from './components/Track'
-import Progress from './components/Progress'
-import History from './components/History'
+import Track from "./components/Track";
+import Progress from "./components/Progress";
+import History from "./components/History";
+import Testing from "./components/Testing";
 
 const client = new ApolloClient({
 	uri: process.env.REACT_APP_APOLLO_SERVER_URL,
@@ -31,6 +32,7 @@ function App() {
 									<Route path="/track" exact component={Track} />
 									<Route path="/progress" exact component={Progress} />
 									<Route path="/history" exact component={History} />
+									<Route path="/testing" exact component={Testing} />
 								</BrowserRouter>
 							</Container>
 						);

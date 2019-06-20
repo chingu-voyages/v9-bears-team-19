@@ -75,6 +75,7 @@ const Mutation = {
 		}
 		const user = await ctx.db.query.user({ where: { id: ctx.userId } });
 		const session = await ctx.db.mutation.createSession(
+			// todo pass dataValues as a json file
 			{
 				data: {
 					...args,
@@ -83,6 +84,9 @@ const Mutation = {
 					},
 					activityType: {
 						connect: { id: args.activityType }
+					},
+					dataValues: {
+						json: args.dataValues
 					}
 				}
 			},

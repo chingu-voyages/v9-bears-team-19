@@ -16,6 +16,13 @@ const Query = {
 		);
 	},
 	activities: forwardTo("db"),
+	activity(parent, args, ctx, info) {
+		return ctx.db.query.activity({
+			where: {
+				id: args.activityType
+			}
+		});
+	},
 	sessions(parent, args, ctx, info) {
 		if (!ctx.userId) {
 			throw new Error("You must be logged in to do this");
