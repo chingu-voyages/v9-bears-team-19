@@ -8,7 +8,12 @@ type Mutation {
 	loginUser(email: String, password: String): User
 	logoutUser: SuccessMessage
 	createActivity(name: String!, dataFields: [String!]!): Activity!
-	createSession(date: String!, name: String!, activityType: String!): Session!
+	createSession(
+		date: String!
+		name: String!
+		activityType: String!
+		dataValues: Json!
+	): Session!
 }
 
 type Query {
@@ -16,4 +21,5 @@ type Query {
 	currentUser: User
 	sessions: [Session]!
 	activities: [Activity]!
+	activity(activityType: String): Activity
 }

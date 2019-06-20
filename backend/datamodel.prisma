@@ -27,7 +27,7 @@ type Session {
 	name: String!
 	user: User!
 	activityType: Activity!
-	dataValues: [DataField!]! @scalarList(strategy: RELATION)
+	dataValues: Json!
 }
 
 enum Permission {
