@@ -69,6 +69,14 @@ const Mutation = {
 		);
 		return activity;
 	},
+	async deleteActivity(parent, args, ctx, info) {
+		const activity = await ctx.db.query.activity({ where: { id: args.id } });
+		// todo add permissions
+		if (!ctx.userId) {
+			throw new Error("You do not have sufficient permissions to do this");
+		}
+		return ctx.db.mutation.deleteActivity({ where: { id: args.id } });
+	},
 	async createSession(parent, args, ctx, info) {
 		if (!ctx.userId) {
 			throw new Error("Login Required");
@@ -93,6 +101,14 @@ const Mutation = {
 			info
 		);
 		return session;
+	},
+	async deleteSession(parent, args, ctx, info) {
+		const session = await ctx.db.query.session({ where: { id: args.id } });
+		// todo add permissions
+		if (!ctx.userId) {
+			throw new Error("You do not have sufficient permissions to do this");
+		}
+		return ctx.db.mutation.deleteSession({ where: { id: args.id } });
 	}
 };
 
