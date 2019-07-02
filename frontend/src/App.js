@@ -27,7 +27,7 @@ function App() {
 						return (
 							<Container className="App">
 								<BrowserRouter>
-									<TopNavbar user={data.currentUser} />
+									<TopNavbar user={data.currentUser}/>
 									<Route path="/" exact component={Signup} />
 									<Route path="/track" exact component={Track} />
 									<Route path="/progress" exact component={Progress} />
