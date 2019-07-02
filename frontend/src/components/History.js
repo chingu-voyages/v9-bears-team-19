@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment, List, Grid } from 'semantic-ui-react'
+import { Segment, List, Grid, Button, Divider } from 'semantic-ui-react'
 
 import { workoutData } from './DummyData'
 
@@ -8,11 +8,10 @@ export default function History() {
     return workoutData.map(workout => {
       return (
         <List.Item horizontal>
-          <List.Content>
-            <List.Header>{workout.date}</List.Header>
-            <List.Item>Type: {workout.workoutType}</List.Item>
-            <List.Item>Time Elapsed: {workout.timeElapsed}</List.Item>
-            <List.Item>Distance: {workout.distance}</List.Item>
+          <Button floated="right">Edit</Button>
+          <List.Header>{workout.date}</List.Header>
+          <List.Content horizontal>
+            <List.Description>{workout.workoutType}  | {workout.distance} km  |  {workout.timeElapsed} min</List.Description>
           </List.Content>
         </List.Item>
       )
@@ -22,9 +21,9 @@ export default function History() {
   return (
     <Grid centered>
       <Grid.Row>
-        <Grid.Column width={8}>
+        <Grid.Column>
           <Segment>
-            <List divided relaxed align="left" size={"large"}>
+            <List divided relaxed verticalAlign='middle' size={'big'}>
               {renderHistory(workoutData)}
             </List>
           </Segment>
