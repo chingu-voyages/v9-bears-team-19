@@ -82,6 +82,7 @@ const Mutation = {
 			throw new Error("Login Required");
 		}
 		const user = await ctx.db.query.user({ where: { id: ctx.userId } });
+		console.log(args);
 		const session = await ctx.db.mutation.createSession(
 			// todo pass dataValues as a json file
 			{
@@ -93,9 +94,7 @@ const Mutation = {
 					activityType: {
 						connect: { id: args.activityType }
 					},
-					dataValues: {
-						json: args.dataValues
-					}
+					dataValues: JSON.stringify(args.dataValues)
 				}
 			},
 			info

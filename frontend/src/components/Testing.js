@@ -3,6 +3,7 @@ import AddActivity from "./AddActivity";
 import AddSession from "./AddSession";
 import DeleteActivity from "./DeleteActivity";
 import DeleteSession from "./DeleteSession";
+import Sessions from "./Sessions";
 
 const Testing = props => {
 	return (
@@ -11,7 +12,8 @@ const Testing = props => {
 			<AddActivity />
 			<AddSession />
 			<DeleteActivity id="cjx3b0yv9m3380b51rihtqhza" />
-			<DeleteSession id="cjx4vdcv67bye0b5139ivw8hm" />
+			<DeleteSession id="cjxizyfbumpa30b68o3gesabp" />
+			<Sessions />
 		</>
 	);
 };

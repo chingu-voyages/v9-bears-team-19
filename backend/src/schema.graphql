@@ -7,6 +7,7 @@ type Mutation {
 	createUser(name: String, email: String, password: String, club: String): User!
 	loginUser(email: String, password: String): User
 	logoutUser: SuccessMessage
+	createDataUnit(name: String!, factor: Float!, standardUnit: Boolean!)
 	createActivity(name: String!, dataFields: [String!]!): Activity!
 	deleteActivity(id: String!): SuccessMessage
 	createSession(
