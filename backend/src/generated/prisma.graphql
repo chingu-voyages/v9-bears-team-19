@@ -338,7 +338,8 @@ input DataMetricWhereUniqueInput {
 
 type DataRecord {
   id: ID!
-  sessionID: ID!
+  session: Session!
+  user: User!
   value: String!
   dataUnit: DataUnit!
 }
@@ -351,14 +352,22 @@ type DataRecordConnection {
 
 input DataRecordCreateInput {
   id: ID
-  sessionID: ID!
+  session: SessionCreateOneWithoutDataValuesInput!
+  user: UserCreateOneInput!
   value: String!
   dataUnit: DataUnitCreateOneInput!
 }
 
-input DataRecordCreateManyInput {
-  create: [DataRecordCreateInput!]
+input DataRecordCreateManyWithoutSessionInput {
+  create: [DataRecordCreateWithoutSessionInput!]
   connect: [DataRecordWhereUniqueInput!]
+}
+
+input DataRecordCreateWithoutSessionInput {
+  id: ID
+  user: UserCreateOneInput!
+  value: String!
+  dataUnit: DataUnitCreateOneInput!
 }
 
 type DataRecordEdge {
@@ -369,15 +378,12 @@ type DataRecordEdge {
 enum DataRecordOrderByInput {
   id_ASC
   id_DESC
-  sessionID_ASC
-  sessionID_DESC
   value_ASC
   value_DESC
 }
 
 type DataRecordPreviousValues {
   id: ID!
-  sessionID: ID!
   value: String!
 }
 
@@ -396,20 +402,6 @@ input DataRecordScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  sessionID: ID
-  sessionID_not: ID
-  sessionID_in: [ID!]
-  sessionID_not_in: [ID!]
-  sessionID_lt: ID
-  sessionID_lte: ID
-  sessionID_gt: ID
-  sessionID_gte: ID
-  sessionID_contains: ID
-  sessionID_not_contains: ID
-  sessionID_starts_with: ID
-  sessionID_not_starts_with: ID
-  sessionID_ends_with: ID
-  sessionID_not_ends_with: ID
   value: String
   value_not: String
   value_in: [String!]
@@ -447,38 +439,31 @@ input DataRecordSubscriptionWhereInput {
   NOT: [DataRecordSubscriptionWhereInput!]
 }
 
-input DataRecordUpdateDataInput {
-  sessionID: ID
-  value: String
-  dataUnit: DataUnitUpdateOneRequiredInput
-}
-
 input DataRecordUpdateInput {
-  sessionID: ID
+  session: SessionUpdateOneRequiredWithoutDataValuesInput
+  user: UserUpdateOneRequiredInput
   value: String
   dataUnit: DataUnitUpdateOneRequiredInput
 }
 
 input DataRecordUpdateManyDataInput {
-  sessionID: ID
   value: String
 }
 
-input DataRecordUpdateManyInput {
-  create: [DataRecordCreateInput!]
-  update: [DataRecordUpdateWithWhereUniqueNestedInput!]
-  upsert: [DataRecordUpsertWithWhereUniqueNestedInput!]
+input DataRecordUpdateManyMutationInput {
+  value: String
+}
+
+input DataRecordUpdateManyWithoutSessionInput {
+  create: [DataRecordCreateWithoutSessionInput!]
   delete: [DataRecordWhereUniqueInput!]
   connect: [DataRecordWhereUniqueInput!]
   set: [DataRecordWhereUniqueInput!]
   disconnect: [DataRecordWhereUniqueInput!]
+  update: [DataRecordUpdateWithWhereUniqueWithoutSessionInput!]
+  upsert: [DataRecordUpsertWithWhereUniqueWithoutSessionInput!]
   deleteMany: [DataRecordScalarWhereInput!]
   updateMany: [DataRecordUpdateManyWithWhereNestedInput!]
-}
-
-input DataRecordUpdateManyMutationInput {
-  sessionID: ID
-  value: String
 }
 
 input DataRecordUpdateManyWithWhereNestedInput {
@@ -486,15 +471,21 @@ input DataRecordUpdateManyWithWhereNestedInput {
   data: DataRecordUpdateManyDataInput!
 }
 
-input DataRecordUpdateWithWhereUniqueNestedInput {
-  where: DataRecordWhereUniqueInput!
-  data: DataRecordUpdateDataInput!
+input DataRecordUpdateWithoutSessionDataInput {
+  user: UserUpdateOneRequiredInput
+  value: String
+  dataUnit: DataUnitUpdateOneRequiredInput
 }
 
-input DataRecordUpsertWithWhereUniqueNestedInput {
+input DataRecordUpdateWithWhereUniqueWithoutSessionInput {
   where: DataRecordWhereUniqueInput!
-  update: DataRecordUpdateDataInput!
-  create: DataRecordCreateInput!
+  data: DataRecordUpdateWithoutSessionDataInput!
+}
+
+input DataRecordUpsertWithWhereUniqueWithoutSessionInput {
+  where: DataRecordWhereUniqueInput!
+  update: DataRecordUpdateWithoutSessionDataInput!
+  create: DataRecordCreateWithoutSessionInput!
 }
 
 input DataRecordWhereInput {
@@ -512,20 +503,8 @@ input DataRecordWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  sessionID: ID
-  sessionID_not: ID
-  sessionID_in: [ID!]
-  sessionID_not_in: [ID!]
-  sessionID_lt: ID
-  sessionID_lte: ID
-  sessionID_gt: ID
-  sessionID_gte: ID
-  sessionID_contains: ID
-  sessionID_not_contains: ID
-  sessionID_starts_with: ID
-  sessionID_not_starts_with: ID
-  sessionID_ends_with: ID
-  sessionID_not_ends_with: ID
+  session: SessionWhereInput
+  user: UserWhereInput
   value: String
   value_not: String
   value_in: [String!]
@@ -887,7 +866,20 @@ input SessionCreateInput {
   name: String!
   user: UserCreateOneInput!
   activityType: ActivityCreateOneInput!
-  dataValues: DataRecordCreateManyInput
+  dataValues: DataRecordCreateManyWithoutSessionInput
+}
+
+input SessionCreateOneWithoutDataValuesInput {
+  create: SessionCreateWithoutDataValuesInput
+  connect: SessionWhereUniqueInput
+}
+
+input SessionCreateWithoutDataValuesInput {
+  id: ID
+  date: String!
+  name: String!
+  user: UserCreateOneInput!
+  activityType: ActivityCreateOneInput!
 }
 
 type SessionEdge {
@@ -933,12 +925,31 @@ input SessionUpdateInput {
   name: String
   user: UserUpdateOneRequiredInput
   activityType: ActivityUpdateOneRequiredInput
-  dataValues: DataRecordUpdateManyInput
+  dataValues: DataRecordUpdateManyWithoutSessionInput
 }
 
 input SessionUpdateManyMutationInput {
   date: String
   name: String
+}
+
+input SessionUpdateOneRequiredWithoutDataValuesInput {
+  create: SessionCreateWithoutDataValuesInput
+  update: SessionUpdateWithoutDataValuesDataInput
+  upsert: SessionUpsertWithoutDataValuesInput
+  connect: SessionWhereUniqueInput
+}
+
+input SessionUpdateWithoutDataValuesDataInput {
+  date: String
+  name: String
+  user: UserUpdateOneRequiredInput
+  activityType: ActivityUpdateOneRequiredInput
+}
+
+input SessionUpsertWithoutDataValuesInput {
+  update: SessionUpdateWithoutDataValuesDataInput!
+  create: SessionCreateWithoutDataValuesInput!
 }
 
 input SessionWhereInput {

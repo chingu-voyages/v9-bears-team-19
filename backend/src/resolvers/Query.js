@@ -19,6 +19,7 @@ const Query = {
 	},
 	activities: forwardTo("db"),
 	dataUnits: forwardTo("db"),
+	dataMetrics: forwardTo("db"),
 	activity(parent, args, ctx, info) {
 		return ctx.db.query.activity({
 			where: {

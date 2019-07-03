@@ -88,27 +88,43 @@ const Mutation = {
 		ctx,
 		info
 	) {
+		const arrayOfDataUnits = dataUnit.map(v => ({ id: v }));
 		const metric = await ctx.db.mutation.createDataMetric({
 			data: {
 				dataName,
 				dataUnit: {
-					connect: dataUnit
+					connect: arrayOfDataUnits
 				},
 				stdDataUnit: {
-					connect: stdDataUnit
+					connect: { id: stdDataUnit }
 				}
 			}
 		});
 		return metric;
 	},
+	async deleteDataMetric(parent, { id }, ctx, info) {
+		const user = await ctx.db.query.user({
+			where: {
+				id: ctx.userId
+			}
+		});
+		if (!user) {
+			throw new Error("Insufficient Privelidges");
+		}
+		return ctx.db.mutation.deleteDataMetric({
+			where: {
+				id
+			}
+		});
+	},
 	async createActivity(parent, args, ctx, info) {
-		const fields = args.dataFields;
+		const fields = args.dataFields.map(v => ({ id: v }));
 		const activity = await ctx.db.mutation.createActivity(
 			{
 				data: {
 					...args,
 					dataFields: {
-						set: [...fields]
+						connect: [...fields]
 					}
 				}
 			},
@@ -124,13 +140,34 @@ const Mutation = {
 		}
 		return ctx.db.mutation.deleteActivity({ where: { id: args.id } });
 	},
+	async createDataRecord(parent, { session, value, dataUnit }, ctx, info) {
+		const dataRecord = await ctx.db.mutation.createDataRecord({
+			data: {
+				session: {
+					connect: {
+						id: session
+					}
+				},
+				value,
+				dataUnit: {
+					connect: {
+						id: dataUnit
+					}
+				},
+				user: {
+					connect: {
+						id: ctx.userId
+					}
+				}
+			}
+		});
+	},
 	async createSession(parent, args, ctx, info) {
 		if (!ctx.userId) {
 			throw new Error("Login Required");
 		}
 		const user = await ctx.db.query.user({ where: { id: ctx.userId } });
 		const session = await ctx.db.mutation.createSession(
-			// todo pass dataValues as a json file
 			{
 				data: {
 					...args,
@@ -140,7 +177,9 @@ const Mutation = {
 					activityType: {
 						connect: { id: args.activityType }
 					},
-					dataValues: JSON.stringify(args.dataValues)
+					dataValues: {
+						connect: []
+					}
 				}
 			},
 			info

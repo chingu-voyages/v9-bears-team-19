@@ -25,7 +25,8 @@ type DataUnit {
 
 type DataRecord {
 	id: ID! @id
-	sessionID: ID!
+	session: Session!
+	user: User!
 	value: String!
 	dataUnit: DataUnit!
 }
