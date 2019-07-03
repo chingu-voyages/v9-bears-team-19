@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Query = require("./Query.js");
 
 const Mutation = {
 	async createUser(parent, args, ctx, info) {
@@ -54,6 +55,52 @@ const Mutation = {
 		ctx.res.clearCookie("token");
 		return { message: "Logged Out" };
 	},
+	async createDataUnit(parent, { name, factor, standardUnit }, ctx, info) {
+		const dataUnit = await ctx.db.mutation.createDataUnit({
+			data: {
+				name,
+				factor,
+				standardUnit: false
+			}
+		});
+		return dataUnit;
+	},
+	async deleteDataUnit(parent, { id }, ctx, info) {
+		const user = await ctx.db.query.user({
+			where: {
+				id: ctx.userId
+			}
+		});
+		// todo set Admin Privelidge on this
+		// todo user does not include permissions.
+		if (!user) {
+			throw new Error("Insufficient Privelidges");
+		}
+		return ctx.db.mutation.deleteDataUnit({
+			where: {
+				id
+			}
+		});
+	},
+	async createDataMetric(
+		parent,
+		{ dataName, dataUnit, stdDataUnit },
+		ctx,
+		info
+	) {
+		const metric = await ctx.db.mutation.createDataMetric({
+			data: {
+				dataName,
+				dataUnit: {
+					connect: dataUnit
+				},
+				stdDataUnit: {
+					connect: stdDataUnit
+				}
+			}
+		});
+		return metric;
+	},
 	async createActivity(parent, args, ctx, info) {
 		const fields = args.dataFields;
 		const activity = await ctx.db.mutation.createActivity(
@@ -82,7 +129,6 @@ const Mutation = {
 			throw new Error("Login Required");
 		}
 		const user = await ctx.db.query.user({ where: { id: ctx.userId } });
-		console.log(args);
 		const session = await ctx.db.mutation.createSession(
 			// todo pass dataValues as a json file
 			{
