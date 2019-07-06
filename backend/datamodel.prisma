@@ -9,16 +9,32 @@ type User {
 	updatedAt: DateTime! @updatedAt
 }
 
-type DataField {
+type DataMetric {
 	id: ID! @id
-	dataName: String!
-	dataValue: String
+	dataName: String! @unique
+	dataUnit: [DataUnit!]! @relation(name: "All_units")
+	stdDataUnit: DataUnit! @relation(name: "Std_unit")
+}
+
+type DataUnit {
+	id: ID! @id
+	name: String!
+	factor: Float!
+	standardUnit: Boolean!
+}
+
+type DataRecord {
+	id: ID! @id
+	session: Session!
+	user: User!
+	value: String!
+	dataUnit: DataUnit!
 }
 
 type Activity {
 	id: ID! @id
 	name: String!
-	dataFields: [String!]! @scalarList(strategy: RELATION)
+	dataFields: [DataMetric!]! @scalarList(strategy: RELATION)
 }
 
 type Session {
@@ -27,7 +43,7 @@ type Session {
 	name: String!
 	user: User!
 	activityType: Activity!
-	dataValues: Json!
+	dataValues: [DataRecord!]! @scalarList(strategy: RELATION)
 }
 
 enum Permission {
