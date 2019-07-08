@@ -176,6 +176,11 @@ input DataMetricCreateManyInput {
   connect: [DataMetricWhereUniqueInput!]
 }
 
+input DataMetricCreateOneInput {
+  create: DataMetricCreateInput
+  connect: DataMetricWhereUniqueInput
+}
+
 type DataMetricEdge {
   node: DataMetric!
   cursor: String!
@@ -282,9 +287,21 @@ input DataMetricUpdateManyWithWhereNestedInput {
   data: DataMetricUpdateManyDataInput!
 }
 
+input DataMetricUpdateOneRequiredInput {
+  create: DataMetricCreateInput
+  update: DataMetricUpdateDataInput
+  upsert: DataMetricUpsertNestedInput
+  connect: DataMetricWhereUniqueInput
+}
+
 input DataMetricUpdateWithWhereUniqueNestedInput {
   where: DataMetricWhereUniqueInput!
   data: DataMetricUpdateDataInput!
+}
+
+input DataMetricUpsertNestedInput {
+  update: DataMetricUpdateDataInput!
+  create: DataMetricCreateInput!
 }
 
 input DataMetricUpsertWithWhereUniqueNestedInput {
@@ -342,6 +359,7 @@ type DataRecord {
   user: User!
   value: String!
   dataUnit: DataUnit!
+  DataMetric: DataMetric!
 }
 
 type DataRecordConnection {
@@ -356,6 +374,7 @@ input DataRecordCreateInput {
   user: UserCreateOneInput!
   value: String!
   dataUnit: DataUnitCreateOneInput!
+  DataMetric: DataMetricCreateOneInput!
 }
 
 input DataRecordCreateManyWithoutSessionInput {
@@ -368,6 +387,7 @@ input DataRecordCreateWithoutSessionInput {
   user: UserCreateOneInput!
   value: String!
   dataUnit: DataUnitCreateOneInput!
+  DataMetric: DataMetricCreateOneInput!
 }
 
 type DataRecordEdge {
@@ -444,6 +464,7 @@ input DataRecordUpdateInput {
   user: UserUpdateOneRequiredInput
   value: String
   dataUnit: DataUnitUpdateOneRequiredInput
+  DataMetric: DataMetricUpdateOneRequiredInput
 }
 
 input DataRecordUpdateManyDataInput {
@@ -475,6 +496,7 @@ input DataRecordUpdateWithoutSessionDataInput {
   user: UserUpdateOneRequiredInput
   value: String
   dataUnit: DataUnitUpdateOneRequiredInput
+  DataMetric: DataMetricUpdateOneRequiredInput
 }
 
 input DataRecordUpdateWithWhereUniqueWithoutSessionInput {
@@ -520,6 +542,7 @@ input DataRecordWhereInput {
   value_ends_with: String
   value_not_ends_with: String
   dataUnit: DataUnitWhereInput
+  DataMetric: DataMetricWhereInput
   AND: [DataRecordWhereInput!]
   OR: [DataRecordWhereInput!]
   NOT: [DataRecordWhereInput!]

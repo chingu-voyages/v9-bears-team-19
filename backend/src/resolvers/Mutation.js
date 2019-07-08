@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Query = require("./Query.js");
+const { gql } = require("apollo-server");
 
 const Mutation = {
 	async createUser(parent, args, ctx, info) {
@@ -140,7 +141,12 @@ const Mutation = {
 		}
 		return ctx.db.mutation.deleteActivity({ where: { id: args.id } });
 	},
-	async createDataRecord(parent, { session, value, dataUnit }, ctx, info) {
+	async createDataRecord(
+		parent,
+		{ session, value, dataUnit, dataMetric },
+		ctx,
+		info
+	) {
 		const dataRecord = await ctx.db.mutation.createDataRecord({
 			data: {
 				session: {
@@ -158,9 +164,15 @@ const Mutation = {
 					connect: {
 						id: ctx.userId
 					}
+				},
+				DataMetric: {
+					connect: {
+						id: dataMetric
+					}
 				}
 			}
 		});
+		return dataRecord;
 	},
 	async createSession(parent, args, ctx, info) {
 		if (!ctx.userId) {
@@ -185,6 +197,18 @@ const Mutation = {
 			info
 		);
 		return session;
+	},
+	async updateSession(parent, { sessionId, dataValues }, ctx, info) {
+		const dataValueArray = dataValues.map(v => ({ id: v }));
+		const sessionUpdate = await ctx.db.mutation.updateSession({
+			where: { id: sessionId },
+			data: {
+				dataValues: {
+					connect: dataValueArray
+				}
+			}
+		});
+		return sessionUpdate;
 	},
 	async deleteSession(parent, args, ctx, info) {
 		const session = await ctx.db.query.session({ where: { id: args.id } });

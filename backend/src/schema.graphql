@@ -21,13 +21,19 @@ type Mutation {
 	deleteDataMetric(id: String!): SuccessMessage
 	createActivity(name: String!, dataFields: [String!]!): Activity!
 	deleteActivity(id: String!): SuccessMessage
-	createDataRecord(session: ID!, value: String!, dataUnit: ID!): DataRecord!
+	createDataRecord(
+		session: ID!
+		dataMetric: ID!
+		value: String!
+		dataUnit: ID!
+	): DataRecord!
 	createSession(
 		date: String!
 		name: String!
 		activityType: String!
 		dataValues: [ID]!
 	): Session!
+	updateSession(dataValues: [String!]!, sessionId: ID!): Session!
 	deleteSession(id: String!): SuccessMessage
 }
 

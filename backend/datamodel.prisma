@@ -29,6 +29,7 @@ type DataRecord {
 	user: User!
 	value: String!
 	dataUnit: DataUnit!
+	DataMetric: DataMetric!
 }
 
 type Activity {
