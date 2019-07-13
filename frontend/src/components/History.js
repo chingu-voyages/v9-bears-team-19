@@ -29,6 +29,7 @@ export default function History() {
 				if (data) {
 					let renderHistory = data.activities.map(workout => (
 						<List.Item key={workout.id} horizontal>
+							{/* todo set link on button to view specific activity */}
 							<Button floated="right">Edit</Button>
 							<List.Header>{workout.date}</List.Header>
 							<List.Content horizontal>
