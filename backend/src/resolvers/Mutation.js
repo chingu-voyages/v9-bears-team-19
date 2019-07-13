@@ -56,167 +56,28 @@ const Mutation = {
 		ctx.res.clearCookie("token");
 		return { message: "Logged Out" };
 	},
-	async createDataUnit(parent, { name, factor, standardUnit }, ctx, info) {
-		const dataUnit = await ctx.db.mutation.createDataUnit({
-			data: {
-				name,
-				factor,
-				standardUnit: false
-			}
-		});
-		return dataUnit;
-	},
-	async deleteDataUnit(parent, { id }, ctx, info) {
-		const user = await ctx.db.query.user({
-			where: {
-				id: ctx.userId
-			}
-		});
-		// todo set Admin Privelidge on this
-		// todo user does not include permissions.
-		if (!user) {
-			throw new Error("Insufficient Privelidges");
-		}
-		return ctx.db.mutation.deleteDataUnit({
-			where: {
-				id
-			}
-		});
-	},
-	async createDataMetric(
-		parent,
-		{ dataName, dataUnit, stdDataUnit },
-		ctx,
-		info
-	) {
-		const arrayOfDataUnits = dataUnit.map(v => ({ id: v }));
-		const metric = await ctx.db.mutation.createDataMetric({
-			data: {
-				dataName,
-				dataUnit: {
-					connect: arrayOfDataUnits
-				},
-				stdDataUnit: {
-					connect: { id: stdDataUnit }
-				}
-			}
-		});
-		return metric;
-	},
-	async deleteDataMetric(parent, { id }, ctx, info) {
-		const user = await ctx.db.query.user({
-			where: {
-				id: ctx.userId
-			}
-		});
-		if (!user) {
-			throw new Error("Insufficient Privelidges");
-		}
-		return ctx.db.mutation.deleteDataMetric({
-			where: {
-				id
-			}
-		});
-	},
 	async createActivity(parent, args, ctx, info) {
-		const fields = args.dataFields.map(v => ({ id: v }));
-		const activity = await ctx.db.mutation.createActivity(
-			{
-				data: {
-					...args,
-					dataFields: {
-						connect: [...fields]
-					}
-				}
-			},
-			info
-		);
-		return activity;
-	},
-	async deleteActivity(parent, args, ctx, info) {
-		const activity = await ctx.db.query.activity({ where: { id: args.id } });
-		// todo add permissions
 		if (!ctx.userId) {
-			throw new Error("You do not have sufficient permissions to do this");
+			throw new Error({ message: "You must be logged in to do this" });
 		}
-		return ctx.db.mutation.deleteActivity({ where: { id: args.id } });
-	},
-	async createDataRecord(
-		parent,
-		{ session, value, dataUnit, dataMetric },
-		ctx,
-		info
-	) {
-		const dataRecord = await ctx.db.mutation.createDataRecord({
+		const newActivity = await ctx.db.mutation.createActivity({
 			data: {
-				session: {
-					connect: {
-						id: session
-					}
-				},
-				value,
-				dataUnit: {
-					connect: {
-						id: dataUnit
-					}
-				},
+				...args,
 				user: {
 					connect: {
 						id: ctx.userId
 					}
-				},
-				DataMetric: {
-					connect: {
-						id: dataMetric
-					}
 				}
 			}
 		});
-		return dataRecord;
+		return newActivity;
 	},
-	async createSession(parent, args, ctx, info) {
-		if (!ctx.userId) {
-			throw new Error("Login Required");
-		}
-		const user = await ctx.db.query.user({ where: { id: ctx.userId } });
-		const session = await ctx.db.mutation.createSession(
-			{
-				data: {
-					...args,
-					user: {
-						connect: { id: ctx.userId }
-					},
-					activityType: {
-						connect: { id: args.activityType }
-					},
-					dataValues: {
-						connect: []
-					}
-				}
-			},
-			info
-		);
-		return session;
-	},
-	async updateSession(parent, { sessionId, dataValues }, ctx, info) {
-		const dataValueArray = dataValues.map(v => ({ id: v }));
-		const sessionUpdate = await ctx.db.mutation.updateSession({
-			where: { id: sessionId },
-			data: {
-				dataValues: {
-					connect: dataValueArray
-				}
+	async deleteActivity(parent, { id }, ctx, info) {
+		const foundActivity = await ctx.db.query.activity({
+			where: {
+				id
 			}
 		});
-		return sessionUpdate;
-	},
-	async deleteSession(parent, args, ctx, info) {
-		const session = await ctx.db.query.session({ where: { id: args.id } });
-		// todo add permissions
-		if (!ctx.userId) {
-			throw new Error("You do not have sufficient permissions to do this");
-		}
-		return ctx.db.mutation.deleteSession({ where: { id: args.id } });
 	}
 };
 

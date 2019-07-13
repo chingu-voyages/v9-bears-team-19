@@ -3,7 +3,6 @@ const { forwardTo } = require("prisma-binding");
 const Query = {
 	users: forwardTo("db"),
 	currentUser(parent, args, ctx, info) {
-		console.log(ctx);
 		if (!ctx.userId) {
 			return null;
 		}
@@ -17,27 +16,29 @@ const Query = {
 		);
 		return user;
 	},
-	activities: forwardTo("db"),
-	dataUnits: forwardTo("db"),
-	dataMetrics: forwardTo("db"),
-	activity(parent, args, ctx, info) {
-		return ctx.db.query.activity({
-			where: {
-				id: args.activityType
-			}
-		});
-	},
-	sessions(parent, args, ctx, info) {
-		if (!ctx.userId) {
-			throw new Error("You must be logged in to do this");
-		}
-		return ctx.db.query.sessions({
+	async activities(parent, args, ctx, db) {
+		const foundActivities = await ctx.db.query.activities({
 			where: {
 				user: {
 					id: ctx.userId
 				}
 			}
 		});
+		return foundActivities;
+	},
+	async activity(parent, args, ctx, info) {
+		const foundActivity = await ctx.db.query.activity(
+			{
+				where: {
+					id: args.id
+				}
+			},
+			`{id title user { id name } distance}`
+		);
+		if (foundActivity.user.id !== ctx.userId) {
+			throw new Error("Permissions Error");
+		}
+		return foundActivity;
 	}
 };
 

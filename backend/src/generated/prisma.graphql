@@ -1,7 +1,16 @@
 type Activity {
   id: ID!
-  name: String!
-  dataFields(where: DataMetricWhereInput, orderBy: DataMetricOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataMetric!]
+  ActivityType: ActivityType!
+  title: String!
+  date: DateTime
+  user: User!
+  distance: Float!
+  distance_unit: Unit!
+  duration: Float!
+  elevation: Float
+  elevation_unit: Unit
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ActivityConnection {
@@ -12,13 +21,15 @@ type ActivityConnection {
 
 input ActivityCreateInput {
   id: ID
-  name: String!
-  dataFields: DataMetricCreateManyInput
-}
-
-input ActivityCreateOneInput {
-  create: ActivityCreateInput
-  connect: ActivityWhereUniqueInput
+  ActivityType: ActivityType!
+  title: String!
+  date: DateTime
+  user: UserCreateOneInput!
+  distance: Float!
+  distance_unit: Unit!
+  duration: Float!
+  elevation: Float
+  elevation_unit: Unit
 }
 
 type ActivityEdge {
@@ -29,13 +40,40 @@ type ActivityEdge {
 enum ActivityOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  ActivityType_ASC
+  ActivityType_DESC
+  title_ASC
+  title_DESC
+  date_ASC
+  date_DESC
+  distance_ASC
+  distance_DESC
+  distance_unit_ASC
+  distance_unit_DESC
+  duration_ASC
+  duration_DESC
+  elevation_ASC
+  elevation_DESC
+  elevation_unit_ASC
+  elevation_unit_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ActivityPreviousValues {
   id: ID!
-  name: String!
+  ActivityType: ActivityType!
+  title: String!
+  date: DateTime
+  distance: Float!
+  distance_unit: Unit!
+  duration: Float!
+  elevation: Float
+  elevation_unit: Unit
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ActivitySubscriptionPayload {
@@ -56,30 +94,32 @@ input ActivitySubscriptionWhereInput {
   NOT: [ActivitySubscriptionWhereInput!]
 }
 
-input ActivityUpdateDataInput {
-  name: String
-  dataFields: DataMetricUpdateManyInput
+enum ActivityType {
+  CYCLING
+  RUNNING
 }
 
 input ActivityUpdateInput {
-  name: String
-  dataFields: DataMetricUpdateManyInput
+  ActivityType: ActivityType
+  title: String
+  date: DateTime
+  user: UserUpdateOneRequiredInput
+  distance: Float
+  distance_unit: Unit
+  duration: Float
+  elevation: Float
+  elevation_unit: Unit
 }
 
 input ActivityUpdateManyMutationInput {
-  name: String
-}
-
-input ActivityUpdateOneRequiredInput {
-  create: ActivityCreateInput
-  update: ActivityUpdateDataInput
-  upsert: ActivityUpsertNestedInput
-  connect: ActivityWhereUniqueInput
-}
-
-input ActivityUpsertNestedInput {
-  update: ActivityUpdateDataInput!
-  create: ActivityCreateInput!
+  ActivityType: ActivityType
+  title: String
+  date: DateTime
+  distance: Float
+  distance_unit: Unit
+  duration: Float
+  elevation: Float
+  elevation_unit: Unit
 }
 
 input ActivityWhereInput {
@@ -97,23 +137,81 @@ input ActivityWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  dataFields_every: DataMetricWhereInput
-  dataFields_some: DataMetricWhereInput
-  dataFields_none: DataMetricWhereInput
+  ActivityType: ActivityType
+  ActivityType_not: ActivityType
+  ActivityType_in: [ActivityType!]
+  ActivityType_not_in: [ActivityType!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  user: UserWhereInput
+  distance: Float
+  distance_not: Float
+  distance_in: [Float!]
+  distance_not_in: [Float!]
+  distance_lt: Float
+  distance_lte: Float
+  distance_gt: Float
+  distance_gte: Float
+  distance_unit: Unit
+  distance_unit_not: Unit
+  distance_unit_in: [Unit!]
+  distance_unit_not_in: [Unit!]
+  duration: Float
+  duration_not: Float
+  duration_in: [Float!]
+  duration_not_in: [Float!]
+  duration_lt: Float
+  duration_lte: Float
+  duration_gt: Float
+  duration_gte: Float
+  elevation: Float
+  elevation_not: Float
+  elevation_in: [Float!]
+  elevation_not_in: [Float!]
+  elevation_lt: Float
+  elevation_lte: Float
+  elevation_gt: Float
+  elevation_gte: Float
+  elevation_unit: Unit
+  elevation_unit_not: Unit
+  elevation_unit_in: [Unit!]
+  elevation_unit_not_in: [Unit!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [ActivityWhereInput!]
   OR: [ActivityWhereInput!]
   NOT: [ActivityWhereInput!]
@@ -127,656 +225,12 @@ type AggregateActivity {
   count: Int!
 }
 
-type AggregateDataMetric {
-  count: Int!
-}
-
-type AggregateDataRecord {
-  count: Int!
-}
-
-type AggregateDataUnit {
-  count: Int!
-}
-
-type AggregateSession {
-  count: Int!
-}
-
 type AggregateUser {
   count: Int!
 }
 
 type BatchPayload {
   count: Long!
-}
-
-type DataMetric {
-  id: ID!
-  dataName: String!
-  dataUnit(where: DataUnitWhereInput, orderBy: DataUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataUnit!]
-  stdDataUnit: DataUnit!
-}
-
-type DataMetricConnection {
-  pageInfo: PageInfo!
-  edges: [DataMetricEdge]!
-  aggregate: AggregateDataMetric!
-}
-
-input DataMetricCreateInput {
-  id: ID
-  dataName: String!
-  dataUnit: DataUnitCreateManyInput
-  stdDataUnit: DataUnitCreateOneInput!
-}
-
-input DataMetricCreateManyInput {
-  create: [DataMetricCreateInput!]
-  connect: [DataMetricWhereUniqueInput!]
-}
-
-input DataMetricCreateOneInput {
-  create: DataMetricCreateInput
-  connect: DataMetricWhereUniqueInput
-}
-
-type DataMetricEdge {
-  node: DataMetric!
-  cursor: String!
-}
-
-enum DataMetricOrderByInput {
-  id_ASC
-  id_DESC
-  dataName_ASC
-  dataName_DESC
-}
-
-type DataMetricPreviousValues {
-  id: ID!
-  dataName: String!
-}
-
-input DataMetricScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  dataName: String
-  dataName_not: String
-  dataName_in: [String!]
-  dataName_not_in: [String!]
-  dataName_lt: String
-  dataName_lte: String
-  dataName_gt: String
-  dataName_gte: String
-  dataName_contains: String
-  dataName_not_contains: String
-  dataName_starts_with: String
-  dataName_not_starts_with: String
-  dataName_ends_with: String
-  dataName_not_ends_with: String
-  AND: [DataMetricScalarWhereInput!]
-  OR: [DataMetricScalarWhereInput!]
-  NOT: [DataMetricScalarWhereInput!]
-}
-
-type DataMetricSubscriptionPayload {
-  mutation: MutationType!
-  node: DataMetric
-  updatedFields: [String!]
-  previousValues: DataMetricPreviousValues
-}
-
-input DataMetricSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: DataMetricWhereInput
-  AND: [DataMetricSubscriptionWhereInput!]
-  OR: [DataMetricSubscriptionWhereInput!]
-  NOT: [DataMetricSubscriptionWhereInput!]
-}
-
-input DataMetricUpdateDataInput {
-  dataName: String
-  dataUnit: DataUnitUpdateManyInput
-  stdDataUnit: DataUnitUpdateOneRequiredInput
-}
-
-input DataMetricUpdateInput {
-  dataName: String
-  dataUnit: DataUnitUpdateManyInput
-  stdDataUnit: DataUnitUpdateOneRequiredInput
-}
-
-input DataMetricUpdateManyDataInput {
-  dataName: String
-}
-
-input DataMetricUpdateManyInput {
-  create: [DataMetricCreateInput!]
-  update: [DataMetricUpdateWithWhereUniqueNestedInput!]
-  upsert: [DataMetricUpsertWithWhereUniqueNestedInput!]
-  delete: [DataMetricWhereUniqueInput!]
-  connect: [DataMetricWhereUniqueInput!]
-  set: [DataMetricWhereUniqueInput!]
-  disconnect: [DataMetricWhereUniqueInput!]
-  deleteMany: [DataMetricScalarWhereInput!]
-  updateMany: [DataMetricUpdateManyWithWhereNestedInput!]
-}
-
-input DataMetricUpdateManyMutationInput {
-  dataName: String
-}
-
-input DataMetricUpdateManyWithWhereNestedInput {
-  where: DataMetricScalarWhereInput!
-  data: DataMetricUpdateManyDataInput!
-}
-
-input DataMetricUpdateOneRequiredInput {
-  create: DataMetricCreateInput
-  update: DataMetricUpdateDataInput
-  upsert: DataMetricUpsertNestedInput
-  connect: DataMetricWhereUniqueInput
-}
-
-input DataMetricUpdateWithWhereUniqueNestedInput {
-  where: DataMetricWhereUniqueInput!
-  data: DataMetricUpdateDataInput!
-}
-
-input DataMetricUpsertNestedInput {
-  update: DataMetricUpdateDataInput!
-  create: DataMetricCreateInput!
-}
-
-input DataMetricUpsertWithWhereUniqueNestedInput {
-  where: DataMetricWhereUniqueInput!
-  update: DataMetricUpdateDataInput!
-  create: DataMetricCreateInput!
-}
-
-input DataMetricWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  dataName: String
-  dataName_not: String
-  dataName_in: [String!]
-  dataName_not_in: [String!]
-  dataName_lt: String
-  dataName_lte: String
-  dataName_gt: String
-  dataName_gte: String
-  dataName_contains: String
-  dataName_not_contains: String
-  dataName_starts_with: String
-  dataName_not_starts_with: String
-  dataName_ends_with: String
-  dataName_not_ends_with: String
-  dataUnit_every: DataUnitWhereInput
-  dataUnit_some: DataUnitWhereInput
-  dataUnit_none: DataUnitWhereInput
-  stdDataUnit: DataUnitWhereInput
-  AND: [DataMetricWhereInput!]
-  OR: [DataMetricWhereInput!]
-  NOT: [DataMetricWhereInput!]
-}
-
-input DataMetricWhereUniqueInput {
-  id: ID
-  dataName: String
-}
-
-type DataRecord {
-  id: ID!
-  session: Session!
-  user: User!
-  value: String!
-  dataUnit: DataUnit!
-  DataMetric: DataMetric!
-}
-
-type DataRecordConnection {
-  pageInfo: PageInfo!
-  edges: [DataRecordEdge]!
-  aggregate: AggregateDataRecord!
-}
-
-input DataRecordCreateInput {
-  id: ID
-  session: SessionCreateOneWithoutDataValuesInput!
-  user: UserCreateOneInput!
-  value: String!
-  dataUnit: DataUnitCreateOneInput!
-  DataMetric: DataMetricCreateOneInput!
-}
-
-input DataRecordCreateManyWithoutSessionInput {
-  create: [DataRecordCreateWithoutSessionInput!]
-  connect: [DataRecordWhereUniqueInput!]
-}
-
-input DataRecordCreateWithoutSessionInput {
-  id: ID
-  user: UserCreateOneInput!
-  value: String!
-  dataUnit: DataUnitCreateOneInput!
-  DataMetric: DataMetricCreateOneInput!
-}
-
-type DataRecordEdge {
-  node: DataRecord!
-  cursor: String!
-}
-
-enum DataRecordOrderByInput {
-  id_ASC
-  id_DESC
-  value_ASC
-  value_DESC
-}
-
-type DataRecordPreviousValues {
-  id: ID!
-  value: String!
-}
-
-input DataRecordScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  value: String
-  value_not: String
-  value_in: [String!]
-  value_not_in: [String!]
-  value_lt: String
-  value_lte: String
-  value_gt: String
-  value_gte: String
-  value_contains: String
-  value_not_contains: String
-  value_starts_with: String
-  value_not_starts_with: String
-  value_ends_with: String
-  value_not_ends_with: String
-  AND: [DataRecordScalarWhereInput!]
-  OR: [DataRecordScalarWhereInput!]
-  NOT: [DataRecordScalarWhereInput!]
-}
-
-type DataRecordSubscriptionPayload {
-  mutation: MutationType!
-  node: DataRecord
-  updatedFields: [String!]
-  previousValues: DataRecordPreviousValues
-}
-
-input DataRecordSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: DataRecordWhereInput
-  AND: [DataRecordSubscriptionWhereInput!]
-  OR: [DataRecordSubscriptionWhereInput!]
-  NOT: [DataRecordSubscriptionWhereInput!]
-}
-
-input DataRecordUpdateInput {
-  session: SessionUpdateOneRequiredWithoutDataValuesInput
-  user: UserUpdateOneRequiredInput
-  value: String
-  dataUnit: DataUnitUpdateOneRequiredInput
-  DataMetric: DataMetricUpdateOneRequiredInput
-}
-
-input DataRecordUpdateManyDataInput {
-  value: String
-}
-
-input DataRecordUpdateManyMutationInput {
-  value: String
-}
-
-input DataRecordUpdateManyWithoutSessionInput {
-  create: [DataRecordCreateWithoutSessionInput!]
-  delete: [DataRecordWhereUniqueInput!]
-  connect: [DataRecordWhereUniqueInput!]
-  set: [DataRecordWhereUniqueInput!]
-  disconnect: [DataRecordWhereUniqueInput!]
-  update: [DataRecordUpdateWithWhereUniqueWithoutSessionInput!]
-  upsert: [DataRecordUpsertWithWhereUniqueWithoutSessionInput!]
-  deleteMany: [DataRecordScalarWhereInput!]
-  updateMany: [DataRecordUpdateManyWithWhereNestedInput!]
-}
-
-input DataRecordUpdateManyWithWhereNestedInput {
-  where: DataRecordScalarWhereInput!
-  data: DataRecordUpdateManyDataInput!
-}
-
-input DataRecordUpdateWithoutSessionDataInput {
-  user: UserUpdateOneRequiredInput
-  value: String
-  dataUnit: DataUnitUpdateOneRequiredInput
-  DataMetric: DataMetricUpdateOneRequiredInput
-}
-
-input DataRecordUpdateWithWhereUniqueWithoutSessionInput {
-  where: DataRecordWhereUniqueInput!
-  data: DataRecordUpdateWithoutSessionDataInput!
-}
-
-input DataRecordUpsertWithWhereUniqueWithoutSessionInput {
-  where: DataRecordWhereUniqueInput!
-  update: DataRecordUpdateWithoutSessionDataInput!
-  create: DataRecordCreateWithoutSessionInput!
-}
-
-input DataRecordWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  session: SessionWhereInput
-  user: UserWhereInput
-  value: String
-  value_not: String
-  value_in: [String!]
-  value_not_in: [String!]
-  value_lt: String
-  value_lte: String
-  value_gt: String
-  value_gte: String
-  value_contains: String
-  value_not_contains: String
-  value_starts_with: String
-  value_not_starts_with: String
-  value_ends_with: String
-  value_not_ends_with: String
-  dataUnit: DataUnitWhereInput
-  DataMetric: DataMetricWhereInput
-  AND: [DataRecordWhereInput!]
-  OR: [DataRecordWhereInput!]
-  NOT: [DataRecordWhereInput!]
-}
-
-input DataRecordWhereUniqueInput {
-  id: ID
-}
-
-type DataUnit {
-  id: ID!
-  name: String!
-  factor: Float!
-  standardUnit: Boolean!
-}
-
-type DataUnitConnection {
-  pageInfo: PageInfo!
-  edges: [DataUnitEdge]!
-  aggregate: AggregateDataUnit!
-}
-
-input DataUnitCreateInput {
-  id: ID
-  name: String!
-  factor: Float!
-  standardUnit: Boolean!
-}
-
-input DataUnitCreateManyInput {
-  create: [DataUnitCreateInput!]
-  connect: [DataUnitWhereUniqueInput!]
-}
-
-input DataUnitCreateOneInput {
-  create: DataUnitCreateInput
-  connect: DataUnitWhereUniqueInput
-}
-
-type DataUnitEdge {
-  node: DataUnit!
-  cursor: String!
-}
-
-enum DataUnitOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  factor_ASC
-  factor_DESC
-  standardUnit_ASC
-  standardUnit_DESC
-}
-
-type DataUnitPreviousValues {
-  id: ID!
-  name: String!
-  factor: Float!
-  standardUnit: Boolean!
-}
-
-input DataUnitScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  factor: Float
-  factor_not: Float
-  factor_in: [Float!]
-  factor_not_in: [Float!]
-  factor_lt: Float
-  factor_lte: Float
-  factor_gt: Float
-  factor_gte: Float
-  standardUnit: Boolean
-  standardUnit_not: Boolean
-  AND: [DataUnitScalarWhereInput!]
-  OR: [DataUnitScalarWhereInput!]
-  NOT: [DataUnitScalarWhereInput!]
-}
-
-type DataUnitSubscriptionPayload {
-  mutation: MutationType!
-  node: DataUnit
-  updatedFields: [String!]
-  previousValues: DataUnitPreviousValues
-}
-
-input DataUnitSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: DataUnitWhereInput
-  AND: [DataUnitSubscriptionWhereInput!]
-  OR: [DataUnitSubscriptionWhereInput!]
-  NOT: [DataUnitSubscriptionWhereInput!]
-}
-
-input DataUnitUpdateDataInput {
-  name: String
-  factor: Float
-  standardUnit: Boolean
-}
-
-input DataUnitUpdateInput {
-  name: String
-  factor: Float
-  standardUnit: Boolean
-}
-
-input DataUnitUpdateManyDataInput {
-  name: String
-  factor: Float
-  standardUnit: Boolean
-}
-
-input DataUnitUpdateManyInput {
-  create: [DataUnitCreateInput!]
-  update: [DataUnitUpdateWithWhereUniqueNestedInput!]
-  upsert: [DataUnitUpsertWithWhereUniqueNestedInput!]
-  delete: [DataUnitWhereUniqueInput!]
-  connect: [DataUnitWhereUniqueInput!]
-  set: [DataUnitWhereUniqueInput!]
-  disconnect: [DataUnitWhereUniqueInput!]
-  deleteMany: [DataUnitScalarWhereInput!]
-  updateMany: [DataUnitUpdateManyWithWhereNestedInput!]
-}
-
-input DataUnitUpdateManyMutationInput {
-  name: String
-  factor: Float
-  standardUnit: Boolean
-}
-
-input DataUnitUpdateManyWithWhereNestedInput {
-  where: DataUnitScalarWhereInput!
-  data: DataUnitUpdateManyDataInput!
-}
-
-input DataUnitUpdateOneRequiredInput {
-  create: DataUnitCreateInput
-  update: DataUnitUpdateDataInput
-  upsert: DataUnitUpsertNestedInput
-  connect: DataUnitWhereUniqueInput
-}
-
-input DataUnitUpdateWithWhereUniqueNestedInput {
-  where: DataUnitWhereUniqueInput!
-  data: DataUnitUpdateDataInput!
-}
-
-input DataUnitUpsertNestedInput {
-  update: DataUnitUpdateDataInput!
-  create: DataUnitCreateInput!
-}
-
-input DataUnitUpsertWithWhereUniqueNestedInput {
-  where: DataUnitWhereUniqueInput!
-  update: DataUnitUpdateDataInput!
-  create: DataUnitCreateInput!
-}
-
-input DataUnitWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  factor: Float
-  factor_not: Float
-  factor_in: [Float!]
-  factor_not_in: [Float!]
-  factor_lt: Float
-  factor_lte: Float
-  factor_gt: Float
-  factor_gte: Float
-  standardUnit: Boolean
-  standardUnit_not: Boolean
-  AND: [DataUnitWhereInput!]
-  OR: [DataUnitWhereInput!]
-  NOT: [DataUnitWhereInput!]
-}
-
-input DataUnitWhereUniqueInput {
-  id: ID
 }
 
 scalar DateTime
@@ -790,30 +244,6 @@ type Mutation {
   upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
   deleteActivity(where: ActivityWhereUniqueInput!): Activity
   deleteManyActivities(where: ActivityWhereInput): BatchPayload!
-  createDataMetric(data: DataMetricCreateInput!): DataMetric!
-  updateDataMetric(data: DataMetricUpdateInput!, where: DataMetricWhereUniqueInput!): DataMetric
-  updateManyDataMetrics(data: DataMetricUpdateManyMutationInput!, where: DataMetricWhereInput): BatchPayload!
-  upsertDataMetric(where: DataMetricWhereUniqueInput!, create: DataMetricCreateInput!, update: DataMetricUpdateInput!): DataMetric!
-  deleteDataMetric(where: DataMetricWhereUniqueInput!): DataMetric
-  deleteManyDataMetrics(where: DataMetricWhereInput): BatchPayload!
-  createDataRecord(data: DataRecordCreateInput!): DataRecord!
-  updateDataRecord(data: DataRecordUpdateInput!, where: DataRecordWhereUniqueInput!): DataRecord
-  updateManyDataRecords(data: DataRecordUpdateManyMutationInput!, where: DataRecordWhereInput): BatchPayload!
-  upsertDataRecord(where: DataRecordWhereUniqueInput!, create: DataRecordCreateInput!, update: DataRecordUpdateInput!): DataRecord!
-  deleteDataRecord(where: DataRecordWhereUniqueInput!): DataRecord
-  deleteManyDataRecords(where: DataRecordWhereInput): BatchPayload!
-  createDataUnit(data: DataUnitCreateInput!): DataUnit!
-  updateDataUnit(data: DataUnitUpdateInput!, where: DataUnitWhereUniqueInput!): DataUnit
-  updateManyDataUnits(data: DataUnitUpdateManyMutationInput!, where: DataUnitWhereInput): BatchPayload!
-  upsertDataUnit(where: DataUnitWhereUniqueInput!, create: DataUnitCreateInput!, update: DataUnitUpdateInput!): DataUnit!
-  deleteDataUnit(where: DataUnitWhereUniqueInput!): DataUnit
-  deleteManyDataUnits(where: DataUnitWhereInput): BatchPayload!
-  createSession(data: SessionCreateInput!): Session!
-  updateSession(data: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session
-  updateManySessions(data: SessionUpdateManyMutationInput!, where: SessionWhereInput): BatchPayload!
-  upsertSession(where: SessionWhereUniqueInput!, create: SessionCreateInput!, update: SessionUpdateInput!): Session!
-  deleteSession(where: SessionWhereUniqueInput!): Session
-  deleteManySessions(where: SessionWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -850,195 +280,22 @@ type Query {
   activity(where: ActivityWhereUniqueInput!): Activity
   activities(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Activity]!
   activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
-  dataMetric(where: DataMetricWhereUniqueInput!): DataMetric
-  dataMetrics(where: DataMetricWhereInput, orderBy: DataMetricOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataMetric]!
-  dataMetricsConnection(where: DataMetricWhereInput, orderBy: DataMetricOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataMetricConnection!
-  dataRecord(where: DataRecordWhereUniqueInput!): DataRecord
-  dataRecords(where: DataRecordWhereInput, orderBy: DataRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataRecord]!
-  dataRecordsConnection(where: DataRecordWhereInput, orderBy: DataRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataRecordConnection!
-  dataUnit(where: DataUnitWhereUniqueInput!): DataUnit
-  dataUnits(where: DataUnitWhereInput, orderBy: DataUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataUnit]!
-  dataUnitsConnection(where: DataUnitWhereInput, orderBy: DataUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataUnitConnection!
-  session(where: SessionWhereUniqueInput!): Session
-  sessions(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Session]!
-  sessionsConnection(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SessionConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
-type Session {
-  id: ID!
-  date: String!
-  name: String!
-  user: User!
-  activityType: Activity!
-  dataValues(where: DataRecordWhereInput, orderBy: DataRecordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DataRecord!]
-}
-
-type SessionConnection {
-  pageInfo: PageInfo!
-  edges: [SessionEdge]!
-  aggregate: AggregateSession!
-}
-
-input SessionCreateInput {
-  id: ID
-  date: String!
-  name: String!
-  user: UserCreateOneInput!
-  activityType: ActivityCreateOneInput!
-  dataValues: DataRecordCreateManyWithoutSessionInput
-}
-
-input SessionCreateOneWithoutDataValuesInput {
-  create: SessionCreateWithoutDataValuesInput
-  connect: SessionWhereUniqueInput
-}
-
-input SessionCreateWithoutDataValuesInput {
-  id: ID
-  date: String!
-  name: String!
-  user: UserCreateOneInput!
-  activityType: ActivityCreateOneInput!
-}
-
-type SessionEdge {
-  node: Session!
-  cursor: String!
-}
-
-enum SessionOrderByInput {
-  id_ASC
-  id_DESC
-  date_ASC
-  date_DESC
-  name_ASC
-  name_DESC
-}
-
-type SessionPreviousValues {
-  id: ID!
-  date: String!
-  name: String!
-}
-
-type SessionSubscriptionPayload {
-  mutation: MutationType!
-  node: Session
-  updatedFields: [String!]
-  previousValues: SessionPreviousValues
-}
-
-input SessionSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: SessionWhereInput
-  AND: [SessionSubscriptionWhereInput!]
-  OR: [SessionSubscriptionWhereInput!]
-  NOT: [SessionSubscriptionWhereInput!]
-}
-
-input SessionUpdateInput {
-  date: String
-  name: String
-  user: UserUpdateOneRequiredInput
-  activityType: ActivityUpdateOneRequiredInput
-  dataValues: DataRecordUpdateManyWithoutSessionInput
-}
-
-input SessionUpdateManyMutationInput {
-  date: String
-  name: String
-}
-
-input SessionUpdateOneRequiredWithoutDataValuesInput {
-  create: SessionCreateWithoutDataValuesInput
-  update: SessionUpdateWithoutDataValuesDataInput
-  upsert: SessionUpsertWithoutDataValuesInput
-  connect: SessionWhereUniqueInput
-}
-
-input SessionUpdateWithoutDataValuesDataInput {
-  date: String
-  name: String
-  user: UserUpdateOneRequiredInput
-  activityType: ActivityUpdateOneRequiredInput
-}
-
-input SessionUpsertWithoutDataValuesInput {
-  update: SessionUpdateWithoutDataValuesDataInput!
-  create: SessionCreateWithoutDataValuesInput!
-}
-
-input SessionWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  date: String
-  date_not: String
-  date_in: [String!]
-  date_not_in: [String!]
-  date_lt: String
-  date_lte: String
-  date_gt: String
-  date_gte: String
-  date_contains: String
-  date_not_contains: String
-  date_starts_with: String
-  date_not_starts_with: String
-  date_ends_with: String
-  date_not_ends_with: String
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  user: UserWhereInput
-  activityType: ActivityWhereInput
-  dataValues_every: DataRecordWhereInput
-  dataValues_some: DataRecordWhereInput
-  dataValues_none: DataRecordWhereInput
-  AND: [SessionWhereInput!]
-  OR: [SessionWhereInput!]
-  NOT: [SessionWhereInput!]
-}
-
-input SessionWhereUniqueInput {
-  id: ID
-}
-
 type Subscription {
   activity(where: ActivitySubscriptionWhereInput): ActivitySubscriptionPayload
-  dataMetric(where: DataMetricSubscriptionWhereInput): DataMetricSubscriptionPayload
-  dataRecord(where: DataRecordSubscriptionWhereInput): DataRecordSubscriptionPayload
-  dataUnit(where: DataUnitSubscriptionWhereInput): DataUnitSubscriptionPayload
-  session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+enum Unit {
+  MILES
+  KM
+  FEET
+  METERS
 }
 
 type User {
