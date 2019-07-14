@@ -9,41 +9,19 @@ type User {
 	updatedAt: DateTime! @updatedAt
 }
 
-type DataMetric {
-	id: ID! @id
-	dataName: String! @unique
-	dataUnit: [DataUnit!]! @relation(name: "All_units")
-	stdDataUnit: DataUnit! @relation(name: "Std_unit")
-}
-
-type DataUnit {
-	id: ID! @id
-	name: String!
-	factor: Float!
-	standardUnit: Boolean!
-}
-
-type DataRecord {
-	id: ID! @id
-	session: Session!
-	user: User!
-	value: String!
-	dataUnit: DataUnit!
-}
-
 type Activity {
 	id: ID! @id
-	name: String!
-	dataFields: [DataMetric!]! @scalarList(strategy: RELATION)
-}
-
-type Session {
-	id: ID! @id
-	date: String!
-	name: String!
-	user: User!
-	activityType: Activity!
-	dataValues: [DataRecord!]! @scalarList(strategy: RELATION)
+	ActivityType: ActivityType!
+	title: String!
+	date: DateTime
+	user: User! @relation
+	distance: Float!
+	distance_unit: Unit!
+	duration: Float!
+	elevation: Float
+	elevation_unit: Unit
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
 }
 
 enum Permission {
@@ -51,4 +29,16 @@ enum Permission {
 	CLUB_ADMIN
 	USER
 	FRIEND
+}
+
+enum ActivityType {
+	CYCLING
+	RUNNING
+}
+
+enum Unit {
+	MILES
+	KM
+	FEET
+	METERS
 }

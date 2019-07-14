@@ -7,36 +7,22 @@ type Mutation {
 	createUser(name: String, email: String, password: String, club: String): User!
 	loginUser(email: String, password: String): User
 	logoutUser: SuccessMessage
-	createDataUnit(
-		name: String!
-		factor: Float!
-		standardUnit: Boolean!
-	): DataUnit!
-	deleteDataUnit(id: String!): SuccessMessage
-	createDataMetric(
-		dataName: String!
-		dataUnit: [String!]!
-		stdDataUnit: String!
-	): DataMetric!
-	deleteDataMetric(id: String!): SuccessMessage
-	createActivity(name: String!, dataFields: [String!]!): Activity!
+	createActivity(
+		ActivityType: ActivityType!
+		title: String!
+		date: DateTime
+		distance: Float!
+		distance_unit: Unit!
+		duration: Float!
+		elevation: Float
+		elevation_unit: Unit
+	): Activity!
 	deleteActivity(id: String!): SuccessMessage
-	createDataRecord(session: ID!, value: String!, dataUnit: ID!): DataRecord!
-	createSession(
-		date: String!
-		name: String!
-		activityType: String!
-		dataValues: [ID]!
-	): Session!
-	deleteSession(id: String!): SuccessMessage
 }
 
 type Query {
 	users: [User]!
 	currentUser: User
-	dataUnits: [DataUnit!]!
-	dataMetrics: [DataMetric]!
-	sessions: [Session]!
 	activities: [Activity]!
-	activity(activityType: String): Activity
+	activity(id: String!): Activity
 }
