@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 
@@ -22,25 +22,78 @@ const CREATE_ACTIVITY_MUTATION = gql`
 			duration: $duration
 			elevation: $elevation
 			elevation_unit: $elevation_unit
-		)
-	}
-	{
-		id
+		) {
+			id
+		}
 	}
 `;
 
-const AddActivity = props => (
-	<Mutation mutation={CREATE_ACTIVITY_MUTATION}>
-		{createActivity => {
-			return (
-				<form>
-					<label>
-						test <input type="text" />
-					</label>
-				</form>
-			);
-		}}
-	</Mutation>
-);
+const parseDate = dateString => {
+	const re = new RegExp(`(<day>\d{2})-(<month>\d{2})-(<year>\d{4})`);
+};
+
+const AddActivity = props => {
+	const [formValues, setFormValues] = useState({
+		date: "01-01-2001",
+		distance: 0
+	});
+
+	const handleChange = e => {
+		e.preventDefault();
+		setFormValues({ ...formValues, [e.target.name]: e.target.value });
+	};
+
+	console.table(formValues);
+	return (
+		<Mutation mutation={CREATE_ACTIVITY_MUTATION} variables={formValues}>
+			{createActivity => {
+				return (
+					<form>
+						<label htmlFor="date">
+							Date
+							<input
+								type="date"
+								name="date"
+								value={formValues.date}
+								onChange={handleChange}
+							/>
+						</label>
+						<label htmlFor="ActivityType">
+							Activity Type
+							<select
+								id="ActivityType"
+								name="ActivityType"
+								value={formValues.ActivityType}
+								onChange={handleChange}
+							>
+								<option>--Choose an Activity Type--</option>
+								<option value="CYCLING">Cycling</option>
+								<option value="RUNNING">Running</option>
+							</select>
+						</label>
+						<label htmlFor="title">
+							Activity Title
+							<input
+								type="text"
+								name="title"
+								value={formValues.title}
+								onChange={handleChange}
+							/>
+						</label>
+						<label htmlFor="distance">
+							Distance
+							<input
+								type="number"
+								name="distance"
+								value={formValues.distance}
+								onChange={handleChange}
+							/>
+						</label>
+					</form>
+				);
+			}}
+		</Mutation>
+	);
+};
 
 export default AddActivity;
