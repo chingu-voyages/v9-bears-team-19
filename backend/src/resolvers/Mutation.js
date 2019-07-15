@@ -83,9 +83,15 @@ const Mutation = {
 		);
 	},
 	async createClub(parent, args, ctx, info) {
+		// automatically attach logged in user as admin for that club
 		const newClub = await ctx.db.mutation.createClub({
 			data: {
-				...args
+				...args,
+				adminUser: {
+					connect: {
+						id: ctx.userId
+					}
+				}
 			}
 		});
 		return newClub;
