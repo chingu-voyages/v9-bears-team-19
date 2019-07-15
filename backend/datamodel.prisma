@@ -3,10 +3,17 @@ type User {
 	name: String!
 	email: String! @unique
 	password: String!
-	club: String!
+	club: Club @relation
 	permissions: [Permission!]! @scalarList(strategy: RELATION)
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
+}
+
+type Club {
+	id: ID! @id
+	name: String!
+	email: String!
+	address: String
 }
 
 type Activity {

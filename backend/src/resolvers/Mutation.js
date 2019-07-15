@@ -73,11 +73,22 @@ const Mutation = {
 		return newActivity;
 	},
 	async deleteActivity(parent, { id }, ctx, info) {
-		const foundActivity = await ctx.db.query.activity({
-			where: {
-				id
+		const foundActivity = await ctx.db.query.activity(
+			{
+				where: {
+					id
+				}
+			},
+			`id name user {id }`
+		);
+	},
+	async createClub(parent, args, ctx, info) {
+		const newClub = await ctx.db.mutation.createClub({
+			data: {
+				...args
 			}
 		});
+		return newClub;
 	}
 };
 

@@ -225,12 +225,180 @@ type AggregateActivity {
   count: Int!
 }
 
+type AggregateClub {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
 
 type BatchPayload {
   count: Long!
+}
+
+type Club {
+  id: ID!
+  name: String!
+  email: String!
+  address: String
+}
+
+type ClubConnection {
+  pageInfo: PageInfo!
+  edges: [ClubEdge]!
+  aggregate: AggregateClub!
+}
+
+input ClubCreateInput {
+  id: ID
+  name: String!
+  email: String!
+  address: String
+}
+
+input ClubCreateOneInput {
+  create: ClubCreateInput
+  connect: ClubWhereUniqueInput
+}
+
+type ClubEdge {
+  node: Club!
+  cursor: String!
+}
+
+enum ClubOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  email_ASC
+  email_DESC
+  address_ASC
+  address_DESC
+}
+
+type ClubPreviousValues {
+  id: ID!
+  name: String!
+  email: String!
+  address: String
+}
+
+type ClubSubscriptionPayload {
+  mutation: MutationType!
+  node: Club
+  updatedFields: [String!]
+  previousValues: ClubPreviousValues
+}
+
+input ClubSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ClubWhereInput
+  AND: [ClubSubscriptionWhereInput!]
+  OR: [ClubSubscriptionWhereInput!]
+  NOT: [ClubSubscriptionWhereInput!]
+}
+
+input ClubUpdateDataInput {
+  name: String
+  email: String
+  address: String
+}
+
+input ClubUpdateInput {
+  name: String
+  email: String
+  address: String
+}
+
+input ClubUpdateManyMutationInput {
+  name: String
+  email: String
+  address: String
+}
+
+input ClubUpdateOneInput {
+  create: ClubCreateInput
+  update: ClubUpdateDataInput
+  upsert: ClubUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ClubWhereUniqueInput
+}
+
+input ClubUpsertNestedInput {
+  update: ClubUpdateDataInput!
+  create: ClubCreateInput!
+}
+
+input ClubWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  address: String
+  address_not: String
+  address_in: [String!]
+  address_not_in: [String!]
+  address_lt: String
+  address_lte: String
+  address_gt: String
+  address_gte: String
+  address_contains: String
+  address_not_contains: String
+  address_starts_with: String
+  address_not_starts_with: String
+  address_ends_with: String
+  address_not_ends_with: String
+  AND: [ClubWhereInput!]
+  OR: [ClubWhereInput!]
+  NOT: [ClubWhereInput!]
+}
+
+input ClubWhereUniqueInput {
+  id: ID
 }
 
 scalar DateTime
@@ -244,6 +412,12 @@ type Mutation {
   upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
   deleteActivity(where: ActivityWhereUniqueInput!): Activity
   deleteManyActivities(where: ActivityWhereInput): BatchPayload!
+  createClub(data: ClubCreateInput!): Club!
+  updateClub(data: ClubUpdateInput!, where: ClubWhereUniqueInput!): Club
+  updateManyClubs(data: ClubUpdateManyMutationInput!, where: ClubWhereInput): BatchPayload!
+  upsertClub(where: ClubWhereUniqueInput!, create: ClubCreateInput!, update: ClubUpdateInput!): Club!
+  deleteClub(where: ClubWhereUniqueInput!): Club
+  deleteManyClubs(where: ClubWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -280,6 +454,9 @@ type Query {
   activity(where: ActivityWhereUniqueInput!): Activity
   activities(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Activity]!
   activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
+  club(where: ClubWhereUniqueInput!): Club
+  clubs(where: ClubWhereInput, orderBy: ClubOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Club]!
+  clubsConnection(where: ClubWhereInput, orderBy: ClubOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClubConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -288,6 +465,7 @@ type Query {
 
 type Subscription {
   activity(where: ActivitySubscriptionWhereInput): ActivitySubscriptionPayload
+  club(where: ClubSubscriptionWhereInput): ClubSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -303,7 +481,7 @@ type User {
   name: String!
   email: String!
   password: String!
-  club: String!
+  club: Club
   permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -320,7 +498,7 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
-  club: String!
+  club: ClubCreateOneInput
   permissions: UserCreatepermissionsInput
 }
 
@@ -347,8 +525,6 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
-  club_ASC
-  club_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -360,7 +536,6 @@ type UserPreviousValues {
   name: String!
   email: String!
   password: String!
-  club: String!
   permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -388,7 +563,7 @@ input UserUpdateDataInput {
   name: String
   email: String
   password: String
-  club: String
+  club: ClubUpdateOneInput
   permissions: UserUpdatepermissionsInput
 }
 
@@ -396,7 +571,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  club: String
+  club: ClubUpdateOneInput
   permissions: UserUpdatepermissionsInput
 }
 
@@ -404,7 +579,6 @@ input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
-  club: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -481,20 +655,7 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
-  club: String
-  club_not: String
-  club_in: [String!]
-  club_not_in: [String!]
-  club_lt: String
-  club_lte: String
-  club_gt: String
-  club_gte: String
-  club_contains: String
-  club_not_contains: String
-  club_starts_with: String
-  club_not_starts_with: String
-  club_ends_with: String
-  club_not_ends_with: String
+  club: ClubWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

@@ -43,7 +43,6 @@ const AddActivity = props => {
 		setFormValues({ ...formValues, [e.target.name]: e.target.value });
 	};
 
-	console.table(formValues);
 	return (
 		<Mutation mutation={CREATE_ACTIVITY_MUTATION} variables={formValues}>
 			{createActivity => {

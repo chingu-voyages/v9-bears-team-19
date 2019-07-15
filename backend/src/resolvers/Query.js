@@ -39,7 +39,8 @@ const Query = {
 			throw new Error("Permissions Error");
 		}
 		return foundActivity;
-	}
+	},
+	clubs: forwardTo("db")
 };
 
 module.exports = Query;
