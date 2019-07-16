@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
+import { Button, Form, Container, Grid } from 'semantic-ui-react'
 
 const CREATE_ACTIVITY_MUTATION = gql`
 	mutation CREATE_ACTIVITY_MUTATION(
@@ -28,9 +29,7 @@ const CREATE_ACTIVITY_MUTATION = gql`
 	}
 `;
 
-const parseDate = dateString => {
-	const re = new RegExp(`(<day>\d{2})-(<month>\d{2})-(<year>\d{4})`);
-};
+
 
 const AddActivity = props => {
 	const [formValues, setFormValues] = useState({
@@ -47,48 +46,65 @@ const AddActivity = props => {
 		<Mutation mutation={CREATE_ACTIVITY_MUTATION} variables={formValues}>
 			{createActivity => {
 				return (
-					<form>
-						<label htmlFor="date">
-							Date
+					<Form>
+
+						<Form.Field>
+							<label htmlFor="date">Date</label>
 							<input
+								placeholder="Date"
 								type="date"
 								name="date"
 								value={formValues.date}
 								onChange={handleChange}
 							/>
-						</label>
-						<label htmlFor="ActivityType">
-							Activity Type
-							<select
-								id="ActivityType"
-								name="ActivityType"
-								value={formValues.ActivityType}
-								onChange={handleChange}
-							>
-								<option>--Choose an Activity Type--</option>
-								<option value="CYCLING">Cycling</option>
-								<option value="RUNNING">Running</option>
-							</select>
-						</label>
-						<label htmlFor="title">
-							Activity Title
+						</Form.Field>
+						
+						<Form.Select
+							label="Activity Type"
+							id="ActivityType"
+							name="ActivityType"
+							value={formValues.ActivityType}
+							onChange={handleChange}
+							options={[
+								{ text: 'Running', value: 'RUNNING' },
+								{ text: 'Cycling', value: 'CYCLING' }
+							]}
+						>
+						</Form.Select>
+						
+						<Form.Field>
+							<label htmlFor="title">Activity Title</label>
 							<input
 								type="text"
 								name="title"
 								value={formValues.title}
 								onChange={handleChange}
 							/>
-						</label>
-						<label htmlFor="distance">
-							Distance
+						</Form.Field>
+
+						<Form.Field>
+							<label htmlFor="distance">Distance</label>
 							<input
 								type="number"
 								name="distance"
 								value={formValues.distance}
 								onChange={handleChange}
 							/>
-						</label>
-					</form>
+						</Form.Field>
+
+						<Form.Field>
+							<label htmlFor="duration">Duration</label>
+							<input
+								type="number"
+								name="duration"
+								value={formValues.duration}
+								onChange={handleChange}
+							/>
+						</Form.Field>
+
+						<Button type="submit">Log Workout</Button>
+						
+					</Form>
 				);
 			}}
 		</Mutation>
