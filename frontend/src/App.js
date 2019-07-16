@@ -7,6 +7,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import User from "./components/User";
 import TopNavbar from "./components/TopNavbar";
 import Signup from "./components/Signup";
+import Signin from "./components/Signin"
 import Track from "./components/Track";
 import Progress from "./components/Progress";
 import History from "./components/History";
@@ -32,6 +33,8 @@ function App() {
 									<Route path="/track" exact component={Track} />
 									<Route path="/progress" exact component={Progress} />
 									<Route path="/history" exact component={History} />
+									<Route path="/signup" exact component={Signup} />
+									<Route path="/signin" exact component={Signin} />
 									<Route path="/testing" exact component={Testing} />
 								</BrowserRouter>
 							</Container>
