@@ -1,5 +1,6 @@
 import React from "react";
 import AddActivity from "./AddActivity";
+import AllClubs from "./AllClubs";
 
 const Testing = props => {
 	return (
@@ -8,6 +9,7 @@ const Testing = props => {
 			<AddActivity />
 			<button>Start Timer</button>
 			<button>Stop Timer</button>
+			<AllClubs />
 		</>
 	);
 };
