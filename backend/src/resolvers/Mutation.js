@@ -95,6 +95,21 @@ const Mutation = {
 			}
 		});
 		return newClub;
+	},
+	async createRace(parent, args, ctx, info) {
+		console.log(ctx.userId);
+		const newRace = await ctx.db.mutation.createRace({
+			data: {
+				...args,
+				admin: {
+					connect: {
+						id: ctx.userId
+					}
+					// todo ctx.userID returning null!!
+				},
+				competitors: []
+			}
+		});
 	}
 };
 

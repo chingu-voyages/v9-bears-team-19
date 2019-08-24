@@ -19,6 +19,8 @@ type Mutation {
 	): Activity!
 	deleteActivity(id: String!): SuccessMessage
 	createClub(name: String!, email: String!, address: String): Club!
+	createRace(title: String!, ActivityType: ActivityType!): Race!
+	addCompetitors(race: String!, competitor: String!): Race!
 }
 
 type Query {

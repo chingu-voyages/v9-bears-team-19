@@ -3,7 +3,9 @@ type User {
 	name: String!
 	email: String! @unique
 	password: String!
-	club: Club @relation(name: "AllMembers")
+	club: Club @relation(name: "Club_Users")
+	race_admin: [Race!] @relation(name: "Race_Admin")
+	races: [Race!] @relation(name: "Race_Attendees")
 	permissions: [Permission!]! @scalarList(strategy: RELATION)
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
@@ -14,8 +16,7 @@ type Club {
 	name: String!
 	email: String!
 	address: String
-	adminUser: User! @relation(name: "AdminUser")
-	memberUsers: [User]! @relation(name: "AllMembers")
+	users: [User!]! @relation(name: "Club_Users")
 }
 
 type Activity {
@@ -33,11 +34,29 @@ type Activity {
 	updatedAt: DateTime! @updatedAt
 }
 
+type Race {
+	id: ID! @id
+	ActivityType: ActivityType!
+	title: String!
+	event_date: DateTime
+	admin: User! @relation(name: "Race_Admin")
+	competitors: [User!]! @relation(name: "Race_Attendees")
+	race_times: [RaceTime!]! @relation
+}
+
+type RaceTime {
+	id: ID! @id
+	race: Race! @unique
+	user: User! @unique
+	duration: Int
+}
+
 enum Permission {
 	ADMIN
 	CLUB_ADMIN
 	USER
 	FRIEND
+	RACE_ADMIN
 }
 
 enum ActivityType {
