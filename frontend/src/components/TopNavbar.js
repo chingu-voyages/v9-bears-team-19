@@ -49,16 +49,29 @@ export default class MenuExampleBasic extends Component {
 				</Link>
 				<Menu.Menu position="right">
 					<Link to="/signin">
-						<Menu.Item name="login">Login</Menu.Item>
+						<Menu.Item 
+							name="login"
+							active={activeItem === "login"}
+							onClick={this.handleItemClick}
+						>Login</Menu.Item>
+					</Link>
+					<Link to='/signup'>
+						<Menu.Item 
+							name="signup"
+							active={activeItem === "signup"}
+							onClick={this.handleItemClick}
+						>
+							{!this.props.user ? (
+								"Please login"
+							) : (
+									`Welcome back {this.props.user.name}`
+								)}
+						</Menu.Item>
 					</Link>
 				</Menu.Menu>
 				{/* // TODO I've just chucked this in here so it is in place. You will
 				probably want to restyle it properly. */}
-				{!this.props.user ? (
-					<p>Please login</p>
-				) : (
-					<p>Welcome back {this.props.user.name}</p>
-				)}
+				
 			</Menu>
 		);
 	}

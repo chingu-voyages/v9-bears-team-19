@@ -1037,6 +1037,7 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
+
   club: ClubCreateOneWithoutUsersInput
   race_admin: RaceCreateManyWithoutAdminInput
   races: RaceCreateManyWithoutCompetitorsInput
@@ -1322,12 +1323,6 @@ input UserUpdateWithoutRace_adminDataInput {
   permissions: UserUpdatepermissionsInput
 }
 
-input UserUpdateWithoutRacesDataInput {
-  name: String
-  email: String
-  password: String
-  club: ClubUpdateOneWithoutUsersInput
-  race_admin: RaceUpdateManyWithoutAdminInput
   permissions: UserUpdatepermissionsInput
 }
 
