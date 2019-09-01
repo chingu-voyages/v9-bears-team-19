@@ -20,7 +20,7 @@ const corsOptions = {
 const auth = (req, res, next) => {
 	let token = req.headers.cookie;
 	if (token) {
-		const { userId } = jwt.verify(
+		const userId = jwt.verify(
 			token.replace(/^token=/, ""),
 			process.env.JWT_SECRET
 		);
@@ -38,7 +38,7 @@ const server = new ApolloServer({
 		Query
 	},
 	context: ({ req }) => {
-		return { ...req, db };
+		return { req, db };
 	}
 });
 

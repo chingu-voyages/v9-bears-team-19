@@ -97,7 +97,7 @@ const Mutation = {
 				...args,
 				admin: {
 					connect: {
-						id: ctx.userId
+						id: ctx.req.userId
 					}
 					// todo ctx.userID returning null!!
 				},
