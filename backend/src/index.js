@@ -3,8 +3,6 @@ const db = require("./db");
 const Mutation = require("./resolvers/Mutation");
 const Query = require("./resolvers/Query");
 const { importSchema } = require("graphql-import");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config();

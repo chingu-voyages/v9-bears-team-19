@@ -45,11 +45,12 @@ const Mutation = {
 		}
 		// generate JWT
 		const token = await jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-		// set cookie with token
+		// call a function from context on response to set cookie with token
 		ctx.res.cookie("token", token, {
 			httpOnly: true,
 			maxAge: 1000 * 60 * 60 * 24 * 365
 		});
+		// cookie is set through the react app
 		return user;
 	},
 	async logoutUser(parent, args, ctx, info) {
@@ -91,7 +92,6 @@ const Mutation = {
 		return newClub;
 	},
 	async createRace(parent, args, ctx, info) {
-		console.log(ctx.userId);
 		const newRace = await ctx.db.mutation.createRace({
 			data: {
 				...args,

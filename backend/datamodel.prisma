@@ -6,7 +6,6 @@ type User {
 	club: Club @relation(name: "Club_Users")
 	race_admin: [Race!] @relation(name: "Race_Admin")
 	races: [Race!] @relation(name: "Race_Attendees")
-	permissions: [Permission!]! @scalarList(strategy: RELATION)
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
