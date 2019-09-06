@@ -21,7 +21,8 @@ type Mutation {
 	createClub(name: String!, email: String!, address: String): Club!
 	createRace(title: String!, ActivityType: ActivityType!): Race!
 	addMeToRace(race: String!): SuccessMessage
-	startRace(race: String!, timeStart: Int!): SuccessMessage!
+	startRace(race: String!, timeStart: Int!): SuccessMessage
+	stopTimer(raceTimeId: String!, timeStop: Int!): SuccessMessage
 }
 
 type Query {

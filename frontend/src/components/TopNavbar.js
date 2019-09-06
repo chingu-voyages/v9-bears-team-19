@@ -54,11 +54,7 @@ export default class MenuExampleBasic extends Component {
 				</Menu.Menu>
 				{/* // TODO I've just chucked this in here so it is in place. You will
 				probably want to restyle it properly. */}
-				{!this.props.user ? (
-					<p>Please login</p>
-				) : (
-					<p>Welcome back {this.props.user.name}</p>
-				)}
+				<p>Please login</p>
 			</Menu>
 		);
 	}

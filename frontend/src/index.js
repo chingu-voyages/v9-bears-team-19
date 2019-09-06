@@ -3,15 +3,22 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "semantic-ui-css/semantic.min.css";
 import App from "./App";
+import { ApolloProvider } from "react-apollo";
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import * as serviceWorker from "./serviceWorker";
+import ApolloClient from "apollo-boost";
 
+const client = new ApolloClient({
+	uri: process.env.REACT_APP_APOLLO_SERVER_URL,
+	credentials: "include"
+});
 
-//wrap App with redux provider for access to redux store
-ReactDOM.render(
-  <App />
-, document.getElementById("root"));
+const MyApp = () => (
+	<ApolloProvider client={client}>
+		<ApolloHooksProvider client={client}>
+			<App />
+		</ApolloHooksProvider>
+	</ApolloProvider>
+);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(<MyApp />, document.getElementById("root"));

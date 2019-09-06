@@ -168,6 +168,28 @@ const Mutation = {
 			}
 		});
 		return { message: "Timer Started" };
+	},
+	async stopTimer(parent, args, ctx, info) {
+		const stopTimer = await ctx.db.mutation.updateRaceTime({
+			where: {
+				id: args.raceTimeId
+			},
+			data: {
+				timeStop: args.timeStop
+			}
+		});
+		const startTime = await ctx.db.query.raceTime(
+			{
+				where: {
+					id: args.raceTimeId
+				}
+			},
+			`{timeStart raceEntry { user { name } }}`
+		);
+		return {
+			message: `Timer for ${startTime.name} = ${args.timeStop -
+				startTime.timeStart}`
+		};
 	}
 };
 
