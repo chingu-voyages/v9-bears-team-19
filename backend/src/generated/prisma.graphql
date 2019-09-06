@@ -233,6 +233,10 @@ type AggregateRace {
   count: Int!
 }
 
+type AggregateRaceEntry {
+  count: Int!
+}
+
 type AggregateRaceTime {
   count: Int!
 }
@@ -445,6 +449,11 @@ type Mutation {
   upsertRace(where: RaceWhereUniqueInput!, create: RaceCreateInput!, update: RaceUpdateInput!): Race!
   deleteRace(where: RaceWhereUniqueInput!): Race
   deleteManyRaces(where: RaceWhereInput): BatchPayload!
+  createRaceEntry(data: RaceEntryCreateInput!): RaceEntry!
+  updateRaceEntry(data: RaceEntryUpdateInput!, where: RaceEntryWhereUniqueInput!): RaceEntry
+  upsertRaceEntry(where: RaceEntryWhereUniqueInput!, create: RaceEntryCreateInput!, update: RaceEntryUpdateInput!): RaceEntry!
+  deleteRaceEntry(where: RaceEntryWhereUniqueInput!): RaceEntry
+  deleteManyRaceEntries(where: RaceEntryWhereInput): BatchPayload!
   createRaceTime(data: RaceTimeCreateInput!): RaceTime!
   updateRaceTime(data: RaceTimeUpdateInput!, where: RaceTimeWhereUniqueInput!): RaceTime
   updateManyRaceTimes(data: RaceTimeUpdateManyMutationInput!, where: RaceTimeWhereInput): BatchPayload!
@@ -494,6 +503,9 @@ type Query {
   race(where: RaceWhereUniqueInput!): Race
   races(where: RaceWhereInput, orderBy: RaceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Race]!
   racesConnection(where: RaceWhereInput, orderBy: RaceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RaceConnection!
+  raceEntry(where: RaceEntryWhereUniqueInput!): RaceEntry
+  raceEntries(where: RaceEntryWhereInput, orderBy: RaceEntryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [RaceEntry]!
+  raceEntriesConnection(where: RaceEntryWhereInput, orderBy: RaceEntryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RaceEntryConnection!
   raceTime(where: RaceTimeWhereUniqueInput!): RaceTime
   raceTimes(where: RaceTimeWhereInput, orderBy: RaceTimeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [RaceTime]!
   raceTimesConnection(where: RaceTimeWhereInput, orderBy: RaceTimeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RaceTimeConnection!
@@ -526,7 +538,7 @@ input RaceCreateInput {
   event_date: DateTime
   admin: UserCreateOneWithoutRace_adminInput!
   competitors: UserCreateManyWithoutRacesInput
-  race_times: RaceTimeCreateManyWithoutRaceInput
+  race_times: RaceTimeCreateManyInput
 }
 
 input RaceCreateManyWithoutAdminInput {
@@ -539,8 +551,8 @@ input RaceCreateManyWithoutCompetitorsInput {
   connect: [RaceWhereUniqueInput!]
 }
 
-input RaceCreateOneWithoutRace_timesInput {
-  create: RaceCreateWithoutRace_timesInput
+input RaceCreateOneInput {
+  create: RaceCreateInput
   connect: RaceWhereUniqueInput
 }
 
@@ -550,7 +562,7 @@ input RaceCreateWithoutAdminInput {
   title: String!
   event_date: DateTime
   competitors: UserCreateManyWithoutRacesInput
-  race_times: RaceTimeCreateManyWithoutRaceInput
+  race_times: RaceTimeCreateManyInput
 }
 
 input RaceCreateWithoutCompetitorsInput {
@@ -559,21 +571,115 @@ input RaceCreateWithoutCompetitorsInput {
   title: String!
   event_date: DateTime
   admin: UserCreateOneWithoutRace_adminInput!
-  race_times: RaceTimeCreateManyWithoutRaceInput
-}
-
-input RaceCreateWithoutRace_timesInput {
-  id: ID
-  ActivityType: ActivityType!
-  title: String!
-  event_date: DateTime
-  admin: UserCreateOneWithoutRace_adminInput!
-  competitors: UserCreateManyWithoutRacesInput
+  race_times: RaceTimeCreateManyInput
 }
 
 type RaceEdge {
   node: Race!
   cursor: String!
+}
+
+type RaceEntry {
+  id: ID!
+  race: Race!
+  user: User!
+}
+
+type RaceEntryConnection {
+  pageInfo: PageInfo!
+  edges: [RaceEntryEdge]!
+  aggregate: AggregateRaceEntry!
+}
+
+input RaceEntryCreateInput {
+  id: ID
+  race: RaceCreateOneInput!
+  user: UserCreateOneInput!
+}
+
+input RaceEntryCreateOneInput {
+  create: RaceEntryCreateInput
+  connect: RaceEntryWhereUniqueInput
+}
+
+type RaceEntryEdge {
+  node: RaceEntry!
+  cursor: String!
+}
+
+enum RaceEntryOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type RaceEntryPreviousValues {
+  id: ID!
+}
+
+type RaceEntrySubscriptionPayload {
+  mutation: MutationType!
+  node: RaceEntry
+  updatedFields: [String!]
+  previousValues: RaceEntryPreviousValues
+}
+
+input RaceEntrySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: RaceEntryWhereInput
+  AND: [RaceEntrySubscriptionWhereInput!]
+  OR: [RaceEntrySubscriptionWhereInput!]
+  NOT: [RaceEntrySubscriptionWhereInput!]
+}
+
+input RaceEntryUpdateDataInput {
+  race: RaceUpdateOneRequiredInput
+  user: UserUpdateOneRequiredInput
+}
+
+input RaceEntryUpdateInput {
+  race: RaceUpdateOneRequiredInput
+  user: UserUpdateOneRequiredInput
+}
+
+input RaceEntryUpdateOneRequiredInput {
+  create: RaceEntryCreateInput
+  update: RaceEntryUpdateDataInput
+  upsert: RaceEntryUpsertNestedInput
+  connect: RaceEntryWhereUniqueInput
+}
+
+input RaceEntryUpsertNestedInput {
+  update: RaceEntryUpdateDataInput!
+  create: RaceEntryCreateInput!
+}
+
+input RaceEntryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  race: RaceWhereInput
+  user: UserWhereInput
+  AND: [RaceEntryWhereInput!]
+  OR: [RaceEntryWhereInput!]
+  NOT: [RaceEntryWhereInput!]
+}
+
+input RaceEntryWhereUniqueInput {
+  id: ID
 }
 
 enum RaceOrderByInput {
@@ -660,9 +766,9 @@ input RaceSubscriptionWhereInput {
 
 type RaceTime {
   id: ID!
-  race: Race!
-  user: User!
-  duration: Int
+  timeStart: Int
+  timeStop: Int
+  raceEntry: RaceEntry!
 }
 
 type RaceTimeConnection {
@@ -673,20 +779,14 @@ type RaceTimeConnection {
 
 input RaceTimeCreateInput {
   id: ID
-  race: RaceCreateOneWithoutRace_timesInput!
-  user: UserCreateOneInput!
-  duration: Int
+  timeStart: Int
+  timeStop: Int
+  raceEntry: RaceEntryCreateOneInput!
 }
 
-input RaceTimeCreateManyWithoutRaceInput {
-  create: [RaceTimeCreateWithoutRaceInput!]
+input RaceTimeCreateManyInput {
+  create: [RaceTimeCreateInput!]
   connect: [RaceTimeWhereUniqueInput!]
-}
-
-input RaceTimeCreateWithoutRaceInput {
-  id: ID
-  user: UserCreateOneInput!
-  duration: Int
 }
 
 type RaceTimeEdge {
@@ -697,13 +797,16 @@ type RaceTimeEdge {
 enum RaceTimeOrderByInput {
   id_ASC
   id_DESC
-  duration_ASC
-  duration_DESC
+  timeStart_ASC
+  timeStart_DESC
+  timeStop_ASC
+  timeStop_DESC
 }
 
 type RaceTimePreviousValues {
   id: ID!
-  duration: Int
+  timeStart: Int
+  timeStop: Int
 }
 
 input RaceTimeScalarWhereInput {
@@ -721,14 +824,22 @@ input RaceTimeScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  duration: Int
-  duration_not: Int
-  duration_in: [Int!]
-  duration_not_in: [Int!]
-  duration_lt: Int
-  duration_lte: Int
-  duration_gt: Int
-  duration_gte: Int
+  timeStart: Int
+  timeStart_not: Int
+  timeStart_in: [Int!]
+  timeStart_not_in: [Int!]
+  timeStart_lt: Int
+  timeStart_lte: Int
+  timeStart_gt: Int
+  timeStart_gte: Int
+  timeStop: Int
+  timeStop_not: Int
+  timeStop_in: [Int!]
+  timeStop_not_in: [Int!]
+  timeStop_lt: Int
+  timeStop_lte: Int
+  timeStop_gt: Int
+  timeStop_gte: Int
   AND: [RaceTimeScalarWhereInput!]
   OR: [RaceTimeScalarWhereInput!]
   NOT: [RaceTimeScalarWhereInput!]
@@ -752,30 +863,38 @@ input RaceTimeSubscriptionWhereInput {
   NOT: [RaceTimeSubscriptionWhereInput!]
 }
 
+input RaceTimeUpdateDataInput {
+  timeStart: Int
+  timeStop: Int
+  raceEntry: RaceEntryUpdateOneRequiredInput
+}
+
 input RaceTimeUpdateInput {
-  race: RaceUpdateOneRequiredWithoutRace_timesInput
-  user: UserUpdateOneRequiredInput
-  duration: Int
+  timeStart: Int
+  timeStop: Int
+  raceEntry: RaceEntryUpdateOneRequiredInput
 }
 
 input RaceTimeUpdateManyDataInput {
-  duration: Int
+  timeStart: Int
+  timeStop: Int
 }
 
-input RaceTimeUpdateManyMutationInput {
-  duration: Int
-}
-
-input RaceTimeUpdateManyWithoutRaceInput {
-  create: [RaceTimeCreateWithoutRaceInput!]
+input RaceTimeUpdateManyInput {
+  create: [RaceTimeCreateInput!]
+  update: [RaceTimeUpdateWithWhereUniqueNestedInput!]
+  upsert: [RaceTimeUpsertWithWhereUniqueNestedInput!]
   delete: [RaceTimeWhereUniqueInput!]
   connect: [RaceTimeWhereUniqueInput!]
   set: [RaceTimeWhereUniqueInput!]
   disconnect: [RaceTimeWhereUniqueInput!]
-  update: [RaceTimeUpdateWithWhereUniqueWithoutRaceInput!]
-  upsert: [RaceTimeUpsertWithWhereUniqueWithoutRaceInput!]
   deleteMany: [RaceTimeScalarWhereInput!]
   updateMany: [RaceTimeUpdateManyWithWhereNestedInput!]
+}
+
+input RaceTimeUpdateManyMutationInput {
+  timeStart: Int
+  timeStop: Int
 }
 
 input RaceTimeUpdateManyWithWhereNestedInput {
@@ -783,20 +902,15 @@ input RaceTimeUpdateManyWithWhereNestedInput {
   data: RaceTimeUpdateManyDataInput!
 }
 
-input RaceTimeUpdateWithoutRaceDataInput {
-  user: UserUpdateOneRequiredInput
-  duration: Int
+input RaceTimeUpdateWithWhereUniqueNestedInput {
+  where: RaceTimeWhereUniqueInput!
+  data: RaceTimeUpdateDataInput!
 }
 
-input RaceTimeUpdateWithWhereUniqueWithoutRaceInput {
+input RaceTimeUpsertWithWhereUniqueNestedInput {
   where: RaceTimeWhereUniqueInput!
-  data: RaceTimeUpdateWithoutRaceDataInput!
-}
-
-input RaceTimeUpsertWithWhereUniqueWithoutRaceInput {
-  where: RaceTimeWhereUniqueInput!
-  update: RaceTimeUpdateWithoutRaceDataInput!
-  create: RaceTimeCreateWithoutRaceInput!
+  update: RaceTimeUpdateDataInput!
+  create: RaceTimeCreateInput!
 }
 
 input RaceTimeWhereInput {
@@ -814,16 +928,23 @@ input RaceTimeWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  race: RaceWhereInput
-  user: UserWhereInput
-  duration: Int
-  duration_not: Int
-  duration_in: [Int!]
-  duration_not_in: [Int!]
-  duration_lt: Int
-  duration_lte: Int
-  duration_gt: Int
-  duration_gte: Int
+  timeStart: Int
+  timeStart_not: Int
+  timeStart_in: [Int!]
+  timeStart_not_in: [Int!]
+  timeStart_lt: Int
+  timeStart_lte: Int
+  timeStart_gt: Int
+  timeStart_gte: Int
+  timeStop: Int
+  timeStop_not: Int
+  timeStop_in: [Int!]
+  timeStop_not_in: [Int!]
+  timeStop_lt: Int
+  timeStop_lte: Int
+  timeStop_gt: Int
+  timeStop_gte: Int
+  raceEntry: RaceEntryWhereInput
   AND: [RaceTimeWhereInput!]
   OR: [RaceTimeWhereInput!]
   NOT: [RaceTimeWhereInput!]
@@ -833,13 +954,22 @@ input RaceTimeWhereUniqueInput {
   id: ID
 }
 
+input RaceUpdateDataInput {
+  ActivityType: ActivityType
+  title: String
+  event_date: DateTime
+  admin: UserUpdateOneRequiredWithoutRace_adminInput
+  competitors: UserUpdateManyWithoutRacesInput
+  race_times: RaceTimeUpdateManyInput
+}
+
 input RaceUpdateInput {
   ActivityType: ActivityType
   title: String
   event_date: DateTime
   admin: UserUpdateOneRequiredWithoutRace_adminInput
   competitors: UserUpdateManyWithoutRacesInput
-  race_times: RaceTimeUpdateManyWithoutRaceInput
+  race_times: RaceTimeUpdateManyInput
 }
 
 input RaceUpdateManyDataInput {
@@ -883,10 +1013,10 @@ input RaceUpdateManyWithWhereNestedInput {
   data: RaceUpdateManyDataInput!
 }
 
-input RaceUpdateOneRequiredWithoutRace_timesInput {
-  create: RaceCreateWithoutRace_timesInput
-  update: RaceUpdateWithoutRace_timesDataInput
-  upsert: RaceUpsertWithoutRace_timesInput
+input RaceUpdateOneRequiredInput {
+  create: RaceCreateInput
+  update: RaceUpdateDataInput
+  upsert: RaceUpsertNestedInput
   connect: RaceWhereUniqueInput
 }
 
@@ -895,7 +1025,7 @@ input RaceUpdateWithoutAdminDataInput {
   title: String
   event_date: DateTime
   competitors: UserUpdateManyWithoutRacesInput
-  race_times: RaceTimeUpdateManyWithoutRaceInput
+  race_times: RaceTimeUpdateManyInput
 }
 
 input RaceUpdateWithoutCompetitorsDataInput {
@@ -903,15 +1033,7 @@ input RaceUpdateWithoutCompetitorsDataInput {
   title: String
   event_date: DateTime
   admin: UserUpdateOneRequiredWithoutRace_adminInput
-  race_times: RaceTimeUpdateManyWithoutRaceInput
-}
-
-input RaceUpdateWithoutRace_timesDataInput {
-  ActivityType: ActivityType
-  title: String
-  event_date: DateTime
-  admin: UserUpdateOneRequiredWithoutRace_adminInput
-  competitors: UserUpdateManyWithoutRacesInput
+  race_times: RaceTimeUpdateManyInput
 }
 
 input RaceUpdateWithWhereUniqueWithoutAdminInput {
@@ -924,9 +1046,9 @@ input RaceUpdateWithWhereUniqueWithoutCompetitorsInput {
   data: RaceUpdateWithoutCompetitorsDataInput!
 }
 
-input RaceUpsertWithoutRace_timesInput {
-  update: RaceUpdateWithoutRace_timesDataInput!
-  create: RaceCreateWithoutRace_timesInput!
+input RaceUpsertNestedInput {
+  update: RaceUpdateDataInput!
+  create: RaceCreateInput!
 }
 
 input RaceUpsertWithWhereUniqueWithoutAdminInput {
@@ -1002,6 +1124,7 @@ type Subscription {
   activity(where: ActivitySubscriptionWhereInput): ActivitySubscriptionPayload
   club(where: ClubSubscriptionWhereInput): ClubSubscriptionPayload
   race(where: RaceSubscriptionWhereInput): RaceSubscriptionPayload
+  raceEntry(where: RaceEntrySubscriptionWhereInput): RaceEntrySubscriptionPayload
   raceTime(where: RaceTimeSubscriptionWhereInput): RaceTimeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -1018,10 +1141,10 @@ type User {
   name: String!
   email: String!
   password: String!
+  permissions: [Permission!]!
   club: Club
   race_admin(where: RaceWhereInput, orderBy: RaceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Race!]
   races(where: RaceWhereInput, orderBy: RaceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Race!]
-  permissions: [Permission!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1037,10 +1160,10 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
+  permissions: UserCreatepermissionsInput
   club: ClubCreateOneWithoutUsersInput
   race_admin: RaceCreateManyWithoutAdminInput
   races: RaceCreateManyWithoutCompetitorsInput
-  permissions: UserCreatepermissionsInput
 }
 
 input UserCreateManyWithoutClubInput {
@@ -1072,9 +1195,9 @@ input UserCreateWithoutClubInput {
   name: String!
   email: String!
   password: String!
+  permissions: UserCreatepermissionsInput
   race_admin: RaceCreateManyWithoutAdminInput
   races: RaceCreateManyWithoutCompetitorsInput
-  permissions: UserCreatepermissionsInput
 }
 
 input UserCreateWithoutRace_adminInput {
@@ -1082,9 +1205,9 @@ input UserCreateWithoutRace_adminInput {
   name: String!
   email: String!
   password: String!
+  permissions: UserCreatepermissionsInput
   club: ClubCreateOneWithoutUsersInput
   races: RaceCreateManyWithoutCompetitorsInput
-  permissions: UserCreatepermissionsInput
 }
 
 input UserCreateWithoutRacesInput {
@@ -1092,9 +1215,9 @@ input UserCreateWithoutRacesInput {
   name: String!
   email: String!
   password: String!
+  permissions: UserCreatepermissionsInput
   club: ClubCreateOneWithoutUsersInput
   race_admin: RaceCreateManyWithoutAdminInput
-  permissions: UserCreatepermissionsInput
 }
 
 type UserEdge {
@@ -1227,20 +1350,20 @@ input UserUpdateDataInput {
   name: String
   email: String
   password: String
+  permissions: UserUpdatepermissionsInput
   club: ClubUpdateOneWithoutUsersInput
   race_admin: RaceUpdateManyWithoutAdminInput
   races: RaceUpdateManyWithoutCompetitorsInput
-  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateInput {
   name: String
   email: String
   password: String
+  permissions: UserUpdatepermissionsInput
   club: ClubUpdateOneWithoutUsersInput
   race_admin: RaceUpdateManyWithoutAdminInput
   races: RaceUpdateManyWithoutCompetitorsInput
-  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateManyDataInput {
@@ -1308,27 +1431,27 @@ input UserUpdateWithoutClubDataInput {
   name: String
   email: String
   password: String
+  permissions: UserUpdatepermissionsInput
   race_admin: RaceUpdateManyWithoutAdminInput
   races: RaceUpdateManyWithoutCompetitorsInput
-  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateWithoutRace_adminDataInput {
   name: String
   email: String
   password: String
+  permissions: UserUpdatepermissionsInput
   club: ClubUpdateOneWithoutUsersInput
   races: RaceUpdateManyWithoutCompetitorsInput
-  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateWithoutRacesDataInput {
   name: String
   email: String
   password: String
+  permissions: UserUpdatepermissionsInput
   club: ClubUpdateOneWithoutUsersInput
   race_admin: RaceUpdateManyWithoutAdminInput
-  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateWithWhereUniqueWithoutClubInput {

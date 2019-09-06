@@ -3,13 +3,13 @@ const { forwardTo } = require("prisma-binding");
 const Query = {
 	users: forwardTo("db"),
 	currentUser(parent, args, ctx, info) {
-		if (!ctx.userId) {
+		if (!ctx.req.userId) {
 			return null;
 		}
 		const user = ctx.db.query.user(
 			{
 				where: {
-					id: ctx.userId
+					id: ctx.req.userId
 				}
 			},
 			info
@@ -40,7 +40,8 @@ const Query = {
 		}
 		return foundActivity;
 	},
-	clubs: forwardTo("db")
+	clubs: forwardTo("db"),
+	races: forwardTo("db")
 };
 
 module.exports = Query;

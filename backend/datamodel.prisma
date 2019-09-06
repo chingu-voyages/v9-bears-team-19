@@ -3,6 +3,7 @@ type User {
 	name: String!
 	email: String! @unique
 	password: String!
+	permissions: [Permission]! @scalarList(strategy: RELATION)
 	club: Club @relation(name: "Club_Users")
 	race_admin: [Race!] @relation(name: "Race_Admin")
 	races: [Race!] @relation(name: "Race_Attendees")
@@ -39,15 +40,21 @@ type Race {
 	title: String!
 	event_date: DateTime
 	admin: User! @relation(name: "Race_Admin")
-	competitors: [User!]! @relation(name: "Race_Attendees")
-	race_times: [RaceTime!]! @relation
+	competitors: [User]! @relation(name: "Race_Attendees")
+	race_times: [RaceTime]! @relation
 }
 
 type RaceTime {
 	id: ID! @id
-	race: Race! @unique
-	user: User! @unique
-	duration: Int
+	timeStart: Int
+	timeStop: Int
+	raceEntry: RaceEntry! @unique
+}
+
+type RaceEntry {
+	id: ID! @id
+	race: Race!
+	user: User!
 }
 
 enum Permission {

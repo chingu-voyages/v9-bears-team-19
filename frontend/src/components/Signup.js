@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { CURRENT_USER_QUERY } from "./User";
-import { Button, Form, Container, Header, Grid, Segment } from 'semantic-ui-react'
+import {
+	Button,
+	Form,
+	Container,
+	Header,
+	Grid,
+	Segment
+} from "semantic-ui-react";
 
 const Signup = () => {
-	const [formValues, setFormValues] = useState({ club: "Not Affiliated" });
+	const [formValues, setFormValues] = useState();
 
 	const handleChange = e => {
 		e.preventDefault();
@@ -17,7 +24,7 @@ const Signup = () => {
 			$email: String!
 			$name: String!
 			$password: String!
-			$club: String!
+			$club: String
 		) {
 			createUser(email: $email, name: $name, club: $club, password: $password) {
 				id
@@ -47,15 +54,27 @@ const Signup = () => {
 									>
 										<Form.Field>
 											<label>Name</label>
-											<input name="name" placeHolder="John Doe" onChange={handleChange} />
+											<input
+												name="name"
+												placeHolder="John Doe"
+												onChange={handleChange}
+											/>
 										</Form.Field>
 										<Form.Field>
 											<label htmlFor="email">Email</label>
-											<input name="email" placeHolder="myemail@domain.com" onChange={handleChange} />
+											<input
+												name="email"
+												placeHolder="myemail@domain.com"
+												onChange={handleChange}
+											/>
 										</Form.Field>
 										<Form.Field>
 											<label htmlFor="club">Club</label>
-											<input name="club" placeHolder="LA Area Runners" onChange={handleChange} />
+											<input
+												name="club"
+												placeHolder="LA Area Runners"
+												onChange={handleChange}
+											/>
 										</Form.Field>
 										<Form.Field>
 											<label>Password</label>
@@ -66,7 +85,7 @@ const Signup = () => {
 												placeholder="sneaky_password_123"
 											/>
 										</Form.Field>
-											<Button type="submit">Submit</Button>
+										<Button type="submit">Submit</Button>
 									</Form>
 								</Segment>
 							</Grid.Column>

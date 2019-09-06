@@ -20,6 +20,11 @@ const Mutation = {
 					password: secret,
 					permissions: {
 						set: ["USER"]
+					},
+					club: {
+						connect: {
+							id: args.club
+						}
 					}
 				}
 			},
@@ -33,7 +38,6 @@ const Mutation = {
 		return user;
 	},
 	async loginUser(parent, { email, password }, ctx, info) {
-		// check user
 		const user = await ctx.db.query.user({ where: { email } });
 		if (!user) {
 			throw new Error("No such user found for email ${email}");
@@ -59,14 +63,14 @@ const Mutation = {
 	},
 	async createActivity(parent, args, ctx, info) {
 		if (!ctx.userId) {
-			throw new Error({ message: "You must be logged in to do this" });
+			throw new Error("You must be logged in to do this");
 		}
 		const newActivity = await ctx.db.mutation.createActivity({
 			data: {
 				...args,
 				user: {
 					connect: {
-						id: ctx.userId
+						id: ctx.userId.userId
 					}
 				}
 			}
@@ -100,10 +104,70 @@ const Mutation = {
 						id: ctx.req.userId
 					}
 					// todo ctx.userID returning null!!
+					// todo reason: in graphql playground the credentials were not being passed.
 				},
 				competitors: []
+			},
+			info
+		});
+		return newRace;
+	},
+	async addMeToRace(parent, args, ctx, info) {
+		const user = await ctx.db.query.user({
+			where: {
+				id: ctx.req.userId
 			}
 		});
+		const amendedRace = await ctx.db.mutation.updateRace({
+			where: {
+				id: args.race
+			},
+			data: {
+				competitors: {
+					connect: [
+						{
+							id: ctx.req.userId
+						}
+					]
+				},
+				race_times: {
+					create: {
+						raceEntry: {
+							create: {
+								race: {
+									connect: {
+										id: args.race
+									}
+								},
+								user: {
+									connect: {
+										id: ctx.req.userId
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		// todo if i try to return amendedRace the competitor is not added till the race is
+		// todo re-queried
+		return { message: `User: ${user.name} added` };
+	},
+	async startRace(parent, args, ctx, info) {
+		const startRace = await ctx.db.mutation.updateManyRaceTimes({
+			where: {
+				raceEntry: {
+					race: {
+						id: args.race
+					}
+				}
+			},
+			data: {
+				timeStart: args.timeStart
+			}
+		});
+		return { message: "Timer Started" };
 	}
 };
 

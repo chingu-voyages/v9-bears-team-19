@@ -20,11 +20,17 @@ const corsOptions = {
 const auth = (req, res, next) => {
 	let token = req.headers.cookie;
 	if (token) {
-		const userId = jwt.verify(
+		jwt.verify(
 			token.replace(/^token=/, ""),
-			process.env.JWT_SECRET
+			process.env.JWT_SECRET,
+			(err, decoded) => {
+				if (err) {
+					throw new Error(`Error: ${err}`);
+				} else {
+					req.userId = decoded.userId;
+				}
+			}
 		);
-		req.userId = userId;
 	}
 	next();
 };
@@ -37,8 +43,8 @@ const server = new ApolloServer({
 		Mutation,
 		Query
 	},
-	context: ({ req }) => {
-		return { req, db };
+	context: ({ req, res }) => {
+		return { req, res, db };
 	}
 });
 

@@ -1,4 +1,5 @@
-import { Query } from "react-apollo";
+import { Query, ApolloConsumer } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import React from "react";
 
@@ -16,12 +17,27 @@ export const CURRENT_USER_QUERY = gql`
 
 // runs the query against the backend then injects the data via a render prop ingto a component (used at top level of page)
 
-const User = props => (
-	<Query query={CURRENT_USER_QUERY}>
-		{payload => {
-			return props.children(payload);
-		}}
-	</Query>
-);
+const User = props => {
+	const { loading, error, data } = useQuery(gql`
+		query {
+			currentUser {
+				id
+				email
+				name
+			}
+		}
+	`);
+	console.log(data);
+	// return loading ? (
+	// 	<h2>Loading...</h2>
+	// ) : error ? (
+	// 	<h2>Error: {error}</h2>
+	// ) : (
+	// 	<h1>Hello!!</h1>
+	// );
+	// {
+	// 	return props.children;
+	// }
+};
 
 export default User;
