@@ -4,6 +4,8 @@ const Mutation = require("./resolvers/Mutation");
 const Query = require("./resolvers/Query");
 const { importSchema } = require("graphql-import");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 
@@ -35,8 +37,6 @@ const auth = (req, res, next) => {
 	next();
 };
 
-const app = express().use(auth);
-
 const server = new ApolloServer({
 	typeDefs,
 	resolvers: {
@@ -48,11 +48,18 @@ const server = new ApolloServer({
 	}
 });
 
+const app = express()
+	.use(cookieParser())
+	.use(cors(corsOptions))
+	.use(auth);
+
+// the built in cors in apolloserver would not work so I have disablked it and instead
+// manually used the cors middleware
+
 server.applyMiddleware({
 	app,
 	path: "/graphql",
-	cors: corsOptions,
-	auth
+	cors: false
 });
 
 app.listen({ port: 4000 }, () =>
